@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 import { Picture } from "@/components/media/Picture";
-import { HeroExit } from "@/components/motion/HeroExit";
 import { MagneticButton } from "@/components/motion/MagneticButton";
+import { ScrollAway } from "@/components/motion/ScrollAway";
 import { EnterWords } from "@/components/typography/EnterWords";
 import { Toned } from "@/components/typography/Toned";
 import { Icon } from "@/components/ui/Icon";
@@ -22,7 +22,7 @@ export function Hero({ content, profile }: Props) {
 
   return (
     <section aria-labelledby="hero-title" className="relative pt-32 md:pt-40">
-      <HeroExit>
+      <ScrollAway>
         <div className="shell flex flex-col items-center text-center">
           <HeroPortrait>
             <Picture
@@ -75,7 +75,7 @@ export function Hero({ content, profile }: Props) {
             )}
           </ul>
         </div>
-      </HeroExit>
+      </ScrollAway>
     </section>
   );
 }

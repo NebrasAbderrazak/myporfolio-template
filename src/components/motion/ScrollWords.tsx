@@ -18,8 +18,20 @@ function tokenize(text: string): Token[] {
   });
 }
 
-function Word({ token, progress, range }: { token: Token; progress: MotionValue<number>; range: [number, number] }) {
-  const opacity = useTransform(progress, range, [0.16, 1]);
+const DIM = 0.16;
+
+type WordProps = {
+  token: Token;
+  enter: MotionValue<number>;
+  exit: MotionValue<number>;
+  range: [number, number];
+};
+
+/** Lights up as the paragraph scrolls in and dims again, in reading order, as it scrolls out. */
+function Word({ token, enter, exit, range }: WordProps) {
+  const lit = useTransform(enter, range, [DIM, 1]);
+  const unlit = useTransform(exit, range, [1, DIM]);
+  const opacity = useTransform(() => Math.min(lit.get(), unlit.get()));
   return (
     <m.span data-reveal="" style={{ opacity }} className={cn(token.italic && "italic text-accent")}>
       {token.word}
@@ -30,7 +42,8 @@ function Word({ token, progress, range }: { token: Token; progress: MotionValue<
 export function ScrollWords({ text, className }: { text: string; className?: string }) {
   const ref = useRef<HTMLParagraphElement>(null);
   const reduce = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0.85", "end 0.5"] });
+  const { scrollYProgress: enter } = useScroll({ target: ref, offset: ["start 0.85", "end 0.5"] });
+  const { scrollYProgress: exit } = useScroll({ target: ref, offset: ["end 0.35", "end 0"] });
   const tokens = tokenize(text);
 
   if (reduce) {
@@ -51,7 +64,7 @@ export function ScrollWords({ text, className }: { text: string; className?: str
       {tokens.map((token, i) => (
         <span key={i}>
           {i > 0 && " "}
-          <Word token={token} progress={scrollYProgress} range={[i / tokens.length, (i + 1) / tokens.length]} />
+          <Word token={token} enter={enter} exit={exit} range={[i / tokens.length, (i + 1) / tokens.length]} />
         </span>
       ))}
     </p>
