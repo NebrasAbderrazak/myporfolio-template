@@ -28,13 +28,13 @@ if (!slug) {
   process.exit(1);
 }
 
-const file = path.join(ROOT, "content", "projects", `${slug}.mdx`);
+const file = path.join(ROOT, "content", "projects", `${slug}.md`);
 if (existsSync(file)) {
-  console.error(`\ncontent/projects/${slug}.mdx already exists. Pick another URL name.`);
+  console.error(`\ncontent/projects/${slug}.md already exists. Pick another URL name.`);
   process.exit(1);
 }
 
-const imageDir = path.join(ROOT, "public", "projects", slug);
+const imageDir = path.join(ROOT, "public", "media", "projects", slug);
 mkdirSync(imageDir, { recursive: true });
 mkdirSync(path.dirname(file), { recursive: true });
 
@@ -45,7 +45,7 @@ title: ${yaml(title)}
 summary: ${yaml(summary)}
 date: ${yaml(date)}
 tags: ${yaml(tags)}
-cover: ${yaml(`/projects/${slug}/cover.jpg`)}
+cover: ${yaml(`/media/projects/${slug}/cover.jpg`)}
 coverAlt: ${yaml(`${title}, screenshot`)}
 mockup: ${yaml(mockup)}
 mission: ${yaml(mission)}
@@ -74,15 +74,15 @@ One honest takeaway.
 );
 
 console.log(`
-Created content/projects/${slug}.mdx
+Created content/projects/${slug}.md
 
 Next:
-  1. Put a screenshot at public/projects/${slug}/cover.jpg
+  1. Put a screenshot at public/media/projects/${slug}/cover.jpg
      ${mockup === "phone" ? "(a phone screenshot, portrait, about 1170x2532)" : "(a desktop screenshot, 16:10, e.g. 1920x1200)"}
      .png or .webp also work, then update "cover". Optional: a square logo at
-     public/projects/${slug}/icon.png, then add  icon: "/projects/${slug}/icon.png".
-  2. Write the case study in content/projects/${slug}.mdx.
+     public/media/projects/${slug}/icon.png, then add  icon: "/media/projects/${slug}/icon.png".
+  2. Write the case study in content/projects/${slug}.md.
      Extra screenshots go in the same image folder:
-     ![What the screenshot shows](/projects/${slug}/screen-1.jpg "Optional caption")
+     ![What the screenshot shows](/media/projects/${slug}/screen-1.jpg "Optional caption")
   3. Preview: npm run dev, then open http://localhost:3000/work/${slug}/
 `);

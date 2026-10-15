@@ -1,13 +1,12 @@
-import Link from "next/link";
-import { BlurWords } from "@/components/motion/BlurWords";
-import { Overline } from "@/components/motion/Overline";
 import { Reveal } from "@/components/motion/Reveal";
-import { Icon } from "@/components/ui/Icon";
+import { ArrowLink } from "@/components/ui/ArrowLink";
 import { Timeline } from "@/components/updates/Timeline";
+import type { HomePage } from "@/content/schema";
+import type { Update } from "@/content/updates";
 import { getDictionary } from "@/i18n";
-import type { Update } from "@/lib/content";
+import { SectionHeading } from "./SectionHeading";
 
-export function Updates({ updates }: { updates: Update[] }) {
+export function Updates({ content, updates }: { content: HomePage["updates"]; updates: Update[] }) {
   const t = getDictionary().updates;
 
   return (
@@ -15,28 +14,18 @@ export function Updates({ updates }: { updates: Update[] }) {
       <div className="grid gap-12 md:grid-cols-12 md:gap-8">
         <div className="md:col-span-4">
           <div className="md:sticky md:top-32">
-            <Overline align="left">{t.overline}</Overline>
-            <h2 id="updates-title" className="display-md mt-6">
-              <BlurWords lines={[t.title]} />
-            </h2>
+            <SectionHeading id="updates-title" overline={content.overline} title={content.title} align="left" size="md" />
             <Reveal delay={0.12}>
-              <p className="mt-5 max-w-xs text-[1.05rem] text-ink-soft">{t.intro}</p>
-              <Link
-                href="/updates/"
-                transitionTypes={["page-forward"]}
-                className="pill group mt-8 !gap-3 !py-2.5 !pl-5 !pr-3 transition-transform duration-500 ease-out-expo hover:-translate-y-0.5"
-              >
+              {content.intro && <p className="mt-5 max-w-xs text-[1.05rem] text-ink-soft">{content.intro}</p>}
+              <ArrowLink href="/updates/" className="mt-8">
                 {t.all}
-                <span className="grid size-7 place-items-center rounded-full bg-ink text-paper transition-transform duration-500 ease-out-expo group-hover:rotate-[-45deg]">
-                  <Icon name="arrow-right" className="size-3.5" />
-                </span>
-              </Link>
+              </ArrowLink>
             </Reveal>
           </div>
         </div>
 
         <div className="md:col-span-8">
-          <Timeline updates={updates} latestLabel={t.latest} />
+          <Timeline updates={updates} />
         </div>
       </div>
     </section>

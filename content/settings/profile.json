@@ -1,0 +1,21 @@
+{
+  "name": "Nebras",
+  "role": "Developer & Founder",
+  "portrait": "/media/portrait.jpg",
+  "portraitAlt": "Portrait of Nebras",
+  "status": "Building Jasper Tech",
+  "location": {
+    "city": "Gabès",
+    "country": "Tunisia",
+    "countryCode": "TN",
+    "timeZone": "Africa/Tunis"
+  },
+  "company": {
+    "label": "Founder of",
+    "name": "Jasper Tech",
+    "url": "https://jaspertech.tn"
+  },
+  "email": "hello@example.com",
+  "whatsapp": "+216 24 746 277",
+  "socials": []
+}

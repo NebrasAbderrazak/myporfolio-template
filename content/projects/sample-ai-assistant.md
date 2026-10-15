@@ -1,10 +1,9 @@
 ---
-# PLACEHOLDER: replace this file with a real project (or delete it).
 title: "AI-assisted support tool"
 summary: "Placeholder entry. A sample case study for a small tool that drafts replies, with a person checking every answer before it is sent."
 date: "2026-03-10"
 tags: ["Python", "AI", "APIs", "HTML/CSS"]
-cover: "/projects/sample-ai-assistant/cover.jpg"
+cover: "/media/projects/sample-ai-assistant/cover.jpg"
 coverAlt: "Placeholder phone screen of a chat assistant"
 mockup: "phone"
 mission: "Placeholder. Write one or two sentences about what the project is for and who it helps."

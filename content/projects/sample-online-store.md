@@ -1,10 +1,9 @@
 ---
-# PLACEHOLDER: replace this file with a real project (or delete it).
 title: "Online store for a local shop"
 summary: "Placeholder entry. Shows how a project appears on the site: a catalog, cart and checkout for a small business."
 date: "2026-09-01"
 tags: ["PHP", "MySQL", "Nginx", "VPS"]
-cover: "/projects/sample-online-store/cover.jpg"
+cover: "/media/projects/sample-online-store/cover.jpg"
 coverAlt: "Placeholder screen of an online store with a product grid"
 mockup: "laptop"
 mission: "Placeholder. Write one or two sentences about what the project is for and who it helps."

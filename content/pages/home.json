@@ -1,0 +1,62 @@
+{
+  "hero": {
+    "headline": "~I’m a~ Developer,\nBuilder ~*and*~ ==*Founder*==",
+    "intro": "~Self-taught in~ Gabès, Tunisia. ~I build, deploy and ship software for~ real businesses.",
+    "primaryButton": "See my work",
+    "secondaryButton": "Contact me"
+  },
+  "work": {
+    "overline": "Selected work",
+    "title": "Things I’ve ~*built & shipped*~",
+    "limit": 6
+  },
+  "about": {
+    "overline": "About me",
+    "bio": "I’m a self-taught developer from Gabès, in the south of Tunisia. I learned by building real things for real people, and I still work that way: I design it, build it, put it on a server and keep it running. Today I do that for businesses through Jasper Tech.",
+    "facts": [
+      { "label": "Based in", "value": "Gabès, Tunisia" },
+      { "label": "Founder of", "value": "Jasper Tech" },
+      { "label": "I work on", "value": "Websites, business software and deployment" }
+    ]
+  },
+  "toolbox": {
+    "overline": "Toolbox",
+    "title": "The stack ~*behind the work*~",
+    "intro": "No skill bars. Just the tools I reach for, and what I use each one for.",
+    "groups": [
+      {
+        "name": "Build",
+        "tools": [
+          { "name": "PHP", "note": "Business websites, back offices and the logic behind them." },
+          { "name": "JavaScript", "note": "Interactions, front-end logic and small browser tools." },
+          { "name": "React", "note": "Interfaces with a lot of state, like dashboards and admin panels." },
+          { "name": "Python", "note": "Scripts, automation and the jobs nobody wants to do by hand." },
+          { "name": "HTML & CSS", "note": "Clean markup and layouts that hold up on every screen." }
+        ]
+      },
+      {
+        "name": "Ship",
+        "tools": [
+          { "name": "VPS & deployment", "note": "Linux servers, nginx, SSL and backups. I deploy my own work." },
+          { "name": "APIs", "note": "Connecting payments, messaging and third-party services." }
+        ]
+      },
+      {
+        "name": "Think",
+        "tools": [
+          { "name": "AI-assisted development", "note": "Using AI to move faster, while reviewing every line that ships." }
+        ]
+      }
+    ]
+  },
+  "updates": {
+    "overline": "Updates",
+    "title": "Notes from ~*the workbench*~",
+    "intro": "Short posts about what I’m building, shipping and learning.",
+    "limit": 4
+  },
+  "socials": {
+    "overline": "Elsewhere",
+    "title": "Find me ~*here*~"
+  }
+}

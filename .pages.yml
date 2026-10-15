@@ -1,0 +1,447 @@
+# Admin panel for Pages CMS (https://pagescms.org).
+# Sign in at https://app.pagescms.org with GitHub and open this repository.
+# Every save is a commit, and src/content/schema.ts validates the result at build time.
+
+media:
+  input: public/media
+  output: /media
+  categories: [image]
+  rename: safe
+
+components:
+  heading:
+    type: string
+    description: "Style words with ~muted~, *italic* and ==accent==. They can be combined: ~*and*~."
+    required: true
+
+  multiline-heading:
+    type: text
+    description: "Each line is shown on its own line. Style words with ~muted~, *italic* and ==accent==."
+    required: true
+
+  overline:
+    type: string
+    label: Small label above the heading
+    required: true
+
+content:
+  - name: settings
+    label: Settings
+    type: group
+    items:
+      - name: site
+        label: Site
+        type: file
+        path: content/settings/site.json
+        format: json
+        fields:
+          - name: name
+            label: Site name
+            type: string
+            description: Shown in the header, the footer, browser tabs and the favicon letter.
+            required: true
+          - name: url
+            label: Domain
+            type: string
+            description: Full address with https:// and without a trailing slash, e.g. https://nebras.dev
+            required: true
+          - name: tagline
+            label: Tagline
+            type: string
+            description: Used in the home page title, e.g. "Name | Tagline".
+            required: true
+          - name: description
+            label: Description
+            type: text
+            description: One or two sentences for search engines and link previews.
+            required: true
+          - name: contact
+            label: Contact section (footer, on every page)
+            type: object
+            fields:
+              - name: overline
+                component: overline
+              - name: title
+                label: Heading
+                component: multiline-heading
+              - name: intro
+                label: Intro
+                type: text
+              - name: button
+                label: WhatsApp button text
+                type: string
+                description: Shown when a WhatsApp number is set in your profile. Otherwise the button links to your email.
+                required: true
+          - name: footer
+            label: Footer
+            type: object
+            fields:
+              - name: credit
+                label: Credit line
+                type: string
+                description: Shown after the copyright, e.g. "Designed and built in Gabès, Tunisia."
+
+      - name: profile
+        label: Profile & contact
+        type: file
+        path: content/settings/profile.json
+        format: json
+        fields:
+          - name: name
+            label: Full name
+            type: string
+            required: true
+          - name: role
+            label: Job title
+            type: string
+            required: true
+          - name: portrait
+            label: Portrait
+            type: image
+            description: A square photo works best (at least 600×600).
+            required: true
+          - name: portraitAlt
+            label: Portrait description
+            type: string
+            description: For screen readers, e.g. "Portrait of Nebras".
+          - name: status
+            label: Status
+            type: string
+            description: The small pill under the hero, e.g. "Open to new projects". Leave empty to hide it.
+          - name: location
+            label: Location
+            type: object
+            fields:
+              - name: city
+                type: string
+                required: true
+              - name: country
+                type: string
+                required: true
+              - name: countryCode
+                label: Country code
+                type: string
+                description: Two letters, e.g. TN.
+                required: true
+                pattern:
+                  regex: "^[A-Za-z]{2}$"
+                  message: Use two letters, e.g. TN
+              - name: timeZone
+                label: Time zone
+                type: string
+                description: IANA name used for the live clock, e.g. Africa/Tunis or Europe/Paris.
+                required: true
+          - name: company
+            label: Company
+            type: object
+            description: Shown in the footer. Leave the name empty to hide it.
+            fields:
+              - name: label
+                type: string
+                description: e.g. "Founder of" or "Working at".
+              - name: name
+                type: string
+              - name: url
+                label: Website
+                type: string
+          - name: email
+            label: Email
+            type: string
+            required: true
+          - name: whatsapp
+            label: WhatsApp number
+            type: string
+            description: International format, e.g. +216 24 746 277. Leave empty to hide WhatsApp.
+          - name: socials
+            label: Social profiles
+            type: object
+            list:
+              collapsible:
+                collapsed: true
+                summary: "{platform}: {url}"
+            fields:
+              - name: platform
+                type: select
+                required: true
+                options:
+                  values:
+                    - { name: linkedin, label: LinkedIn }
+                    - { name: github, label: GitHub }
+                    - { name: x, label: X }
+                    - { name: instagram, label: Instagram }
+                    - { name: website, label: Website }
+              - name: url
+                label: Profile URL
+                type: string
+                description: Full link with https://
+                required: true
+              - name: handle
+                type: string
+                description: Optional, e.g. @nebras. Defaults to the link without https://
+
+  - name: pages
+    label: Pages
+    type: group
+    items:
+      - name: home
+        label: Home
+        type: file
+        path: content/pages/home.json
+        format: json
+        fields:
+          - name: hero
+            label: Hero
+            type: object
+            fields:
+              - name: headline
+                component: multiline-heading
+              - name: intro
+                component: heading
+              - name: primaryButton
+                label: First button
+                type: string
+                required: true
+              - name: secondaryButton
+                label: Second button
+                type: string
+                required: true
+          - name: work
+            label: Selected work
+            type: object
+            fields:
+              - name: overline
+                component: overline
+              - name: title
+                component: heading
+              - name: limit
+                label: Projects to show
+                type: number
+                description: Featured projects come first. Unfeatured ones fill in when none are featured.
+          - name: about
+            label: About
+            type: object
+            fields:
+              - name: overline
+                component: overline
+              - name: bio
+                label: Bio
+                type: text
+                description: Words light up one by one as visitors scroll.
+                required: true
+              - name: facts
+                label: Facts
+                type: object
+                list:
+                  max: 3
+                  collapsible:
+                    collapsed: true
+                    summary: "{label} {value}"
+                fields:
+                  - name: label
+                    type: string
+                    required: true
+                  - name: value
+                    type: string
+                    required: true
+          - name: toolbox
+            label: Toolbox
+            type: object
+            fields:
+              - name: overline
+                component: overline
+              - name: title
+                component: heading
+              - name: intro
+                type: text
+              - name: groups
+                type: object
+                list:
+                  collapsible:
+                    collapsed: true
+                    summary: "{name}"
+                fields:
+                  - name: name
+                    label: Group name
+                    type: string
+                    required: true
+                  - name: tools
+                    type: object
+                    list:
+                      collapsible:
+                        collapsed: true
+                        summary: "{name}"
+                    fields:
+                      - name: name
+                        type: string
+                        required: true
+                      - name: note
+                        label: What you use it for
+                        type: string
+          - name: updates
+            label: Updates
+            type: object
+            fields:
+              - name: overline
+                component: overline
+              - name: title
+                component: heading
+              - name: intro
+                type: text
+              - name: limit
+                label: Updates to show
+                type: number
+          - name: socials
+            label: Elsewhere
+            type: object
+            fields:
+              - name: overline
+                component: overline
+              - name: title
+                component: heading
+
+      - name: work_page
+        label: All projects page
+        type: file
+        path: content/pages/work.json
+        format: json
+        fields:
+          - name: overline
+            component: overline
+          - name: title
+            component: heading
+          - name: intro
+            type: text
+
+      - name: updates_page
+        label: Updates page
+        type: file
+        path: content/pages/updates.json
+        format: json
+        fields:
+          - name: overline
+            component: overline
+          - name: title
+            component: heading
+          - name: intro
+            type: text
+
+  - name: projects
+    label: Projects
+    type: collection
+    path: content/projects
+    format: yaml-frontmatter
+    filename:
+      template: "{fields.title}.md"
+      field: create
+    view:
+      fields: [title, date, featured, draft]
+      primary: title
+      sort: [date, title]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: title
+        type: string
+        required: true
+      - name: summary
+        type: text
+        description: One or two sentences shown under the title.
+        required: true
+      - name: date
+        type: date
+        options:
+          format: yyyy-MM-dd
+        required: true
+      - name: tags
+        label: Built with
+        type: string
+        list: true
+      - name: cover
+        label: Screenshot
+        type: image
+        options:
+          path: public/media/projects
+        description: Desktop screenshots look best at 16:10 (e.g. 1920×1200), phone screenshots at about 1170×2532.
+      - name: coverAlt
+        label: Screenshot description
+        type: string
+      - name: mockup
+        label: Frame
+        type: select
+        options:
+          values:
+            - { name: laptop, label: Laptop }
+            - { name: browser, label: Browser window }
+            - { name: phone, label: Phone }
+            - { name: none, label: No frame }
+      - name: icon
+        label: Logo
+        type: image
+        options:
+          path: public/media/projects
+        description: Optional square logo. The first letter of the title is used otherwise.
+      - name: mission
+        type: text
+        description: What the project is for and who it helps.
+      - name: role
+        label: Your role
+        type: string
+      - name: link
+        label: Live link
+        type: string
+        description: Full URL with https://
+      - name: featured
+        label: Show on the home page
+        type: boolean
+      - name: placeholder
+        label: Sample entry
+        type: boolean
+        description: Adds a "Placeholder" badge.
+      - name: draft
+        type: boolean
+        description: Drafts are visible in development only.
+      - name: body
+        label: Case study
+        type: rich-text
+        options:
+          format: markdown
+          path: public/media/projects
+
+  - name: updates
+    label: Updates
+    type: collection
+    path: content/updates
+    format: yaml-frontmatter
+    filename: "{year}-{month}-{day}-{primary}.md"
+    view:
+      fields: [title, date, draft]
+      primary: title
+      sort: [date, title]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: title
+        type: string
+        required: true
+      - name: date
+        type: date
+        options:
+          format: yyyy-MM-dd
+        required: true
+      - name: tags
+        type: string
+        list: true
+      - name: link
+        type: string
+        description: Optional full URL with https://
+      - name: draft
+        type: boolean
+        description: Drafts are visible in development only.
+      - name: body
+        label: Post
+        type: rich-text
+        options:
+          format: markdown
+          path: public/media/updates

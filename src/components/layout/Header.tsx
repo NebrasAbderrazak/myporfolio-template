@@ -5,27 +5,27 @@ import * as m from "motion/react-m";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
+import { ExternalAnchor } from "@/components/ui/ExternalAnchor";
 import { Icon } from "@/components/ui/Icon";
 import { LocalTime } from "@/components/ui/LocalTime";
+import type { Channel } from "@/content/channels";
 import type { Dictionary } from "@/i18n";
 import { getLenis, scrollToId, scrollToTop } from "@/lib/scroll";
-import type { Social } from "@/lib/site";
 import { cn } from "@/lib/cn";
 
 type Props = {
   t: Dictionary["nav"];
-  name: string;
-  email: string;
-  whatsapp: string;
-  whatsappDisplay: string;
-  socials: Social[];
-  timeZone: string;
+  brand: string;
+  channels: Channel[];
+  clock: { city: string; timeZone: string; offset: string };
 };
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 const CURTAIN = [0.76, 0, 0.24, 1] as const;
 
-export function Header({ t, name, email, whatsapp, whatsappDisplay, socials, timeZone }: Props) {
+export function Header({ t, brand, channels, clock }: Props) {
+  const direct = channels.filter((channel) => channel.kind === "direct");
+  const socials = channels.filter((channel) => channel.kind === "social");
   const pathname = usePathname();
   const router = useRouter();
   const onHome = pathname === "/";
@@ -102,7 +102,7 @@ export function Header({ t, name, email, whatsapp, whatsappDisplay, socials, tim
           <Link
             href="/"
             className="pill group pointer-events-auto !gap-0 !px-5 !py-2 font-serif !text-[1.55rem] italic !leading-none md:!px-6 md:!py-2.5 md:!text-[1.7rem]"
-            aria-label={`${name}, ${t.home}`}
+            aria-label={`${brand}, ${t.home}`}
             transitionTypes={["page-back"]}
             onClick={(e) => {
               setOpen(false);
@@ -112,7 +112,7 @@ export function Header({ t, name, email, whatsapp, whatsappDisplay, socials, tim
               }
             }}
           >
-            {name}
+            {brand}
             <span className="not-italic text-accent-bright transition-colors group-hover:text-accent">.</span>
           </Link>
 
@@ -218,36 +218,46 @@ export function Header({ t, name, email, whatsapp, whatsappDisplay, socials, tim
               >
                 <div>
                   <p className="label !text-white/45">{t.getInTouch}</p>
-                  <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="mt-3 block w-fit font-serif text-[1.9rem] leading-tight link-draw">
-                    {whatsappDisplay}
-                  </a>
-                  <a href={`mailto:${email}`} className="mt-1 block w-fit font-serif text-[1.9rem] italic leading-tight text-white/70 link-draw">
-                    {email}
-                  </a>
+                  {direct.map((channel, i) => (
+                    <ExternalAnchor
+                      key={channel.href}
+                      href={channel.href}
+                      external={channel.external}
+                      className={cn(
+                        "block w-fit font-serif text-[1.9rem] leading-tight link-draw",
+                        i === 0 ? "mt-3" : "mt-1 italic text-white/70",
+                      )}
+                    >
+                      {channel.handle}
+                    </ExternalAnchor>
+                  ))}
                 </div>
+                {socials.length > 0 && (
+                  <div>
+                    <p className="label !text-white/45">{t.elsewhere}</p>
+                    <ul className="mt-4 flex flex-wrap gap-2.5">
+                      {socials.map((channel) => (
+                        <li key={channel.href}>
+                          <ExternalAnchor
+                            href={channel.href}
+                            rel="me"
+                            aria-label={channel.label}
+                            className="grid size-12 place-items-center rounded-full border border-white/15 text-white/80 transition-[background-color,color,transform] duration-500 ease-out-expo hover:-translate-y-1 hover:bg-paper hover:text-ink"
+                          >
+                            <Icon name={channel.icon} className="size-[1.1rem]" />
+                          </ExternalAnchor>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
                 <div>
-                  <p className="label !text-white/45">{t.elsewhere}</p>
-                  <ul className="mt-4 flex flex-wrap gap-2.5">
-                    {socials.map((s) => (
-                      <li key={s.label}>
-                        <a
-                          href={s.href}
-                          target="_blank"
-                          rel="noopener noreferrer me"
-                          aria-label={s.label}
-                          className="grid size-12 place-items-center rounded-full border border-white/15 text-white/80 transition-[background-color,color,transform] duration-500 ease-out-expo hover:-translate-y-1 hover:bg-paper hover:text-ink"
-                        >
-                          <Icon name={s.icon} className="size-[1.1rem]" />
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div>
-                  <p className="label !text-white/45">{t.localTime}</p>
+                  <p className="label !text-white/45">
+                    {t.localTime} {clock.city}
+                  </p>
                   <p className="mt-2 font-serif text-[2.6rem] leading-none tabular-nums">
-                    <LocalTime timeZone={timeZone} />
-                    <span className="ml-2 align-middle font-sans text-sm text-white/45">GMT+1</span>
+                    <LocalTime timeZone={clock.timeZone} />
+                    <span className="ml-2 align-middle font-sans text-sm text-white/45">{clock.offset}</span>
                   </p>
                 </div>
               </m.aside>

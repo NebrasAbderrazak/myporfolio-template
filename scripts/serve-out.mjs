@@ -6,6 +6,8 @@ import { createGzip } from "node:zlib";
 const ROOT = path.resolve(import.meta.dirname, "..", "out");
 const PORT = Number(process.env.PORT) || 4173;
 
+const EXTENSIONLESS_PNG = new Set(["opengraph-image", "icon", "apple-icon"]);
+
 const TYPES = {
   ".html": "text/html; charset=utf-8",
   ".js": "application/javascript; charset=utf-8",
@@ -80,7 +82,7 @@ http
       file = path.join(ROOT, "404.html");
     }
     const type =
-      (path.basename(file) === "opengraph-image" ? "image/png" : TYPES[path.extname(file).toLowerCase()]) ??
+      (EXTENSIONLESS_PNG.has(path.basename(file)) ? "image/png" : TYPES[path.extname(file).toLowerCase()]) ??
       "application/octet-stream";
     const gzip = /text|javascript|json|xml|svg/.test(type) && /\bgzip\b/.test(req.headers["accept-encoding"] ?? "");
     res.writeHead(status, {

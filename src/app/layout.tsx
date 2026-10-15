@@ -5,35 +5,25 @@ import { sans, serif } from "./fonts";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { Providers } from "@/components/layout/Providers";
+import { contactChannels } from "@/content/channels";
+import { getProfile, getSite } from "@/content/settings";
 import { getDictionary } from "@/i18n";
-import { site } from "@/lib/site";
+import { utcOffsetLabel } from "@/lib/format";
+import { pageMetadata } from "@/lib/metadata";
 
-const t = getDictionary();
-
-export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
-  title: {
-    default: `${site.name} | ${t.meta.title}`,
-    template: `%s | ${site.name}`,
-  },
-  description: t.meta.description,
-  applicationName: site.name,
-  authors: [{ name: site.name, url: site.url }],
-  creator: site.name,
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    siteName: site.name,
-    title: `${site.name} | ${t.meta.title}`,
-    description: t.meta.description,
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: `${site.name} | ${t.meta.title}`,
-    description: t.meta.description,
-  },
-  formatDetection: { telephone: false, email: false, address: false },
-};
+export function generateMetadata(): Metadata {
+  const site = getSite();
+  const profile = getProfile();
+  return {
+    ...pageMetadata({}),
+    metadataBase: new URL(site.url),
+    title: { default: `${site.name} | ${site.tagline}`, template: `%s | ${site.name}` },
+    applicationName: site.name,
+    authors: [{ name: profile.name, url: site.url }],
+    creator: profile.name,
+    formatDetection: { telephone: false, email: false, address: false },
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: "#f2f0eb",
@@ -41,6 +31,12 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
+  const t = getDictionary();
+  const site = getSite();
+  const profile = getProfile();
+  const channels = contactChannels(profile);
+  const { city, timeZone } = profile.location;
+
   return (
     <html lang="en" className={`${serif.variable} ${sans.variable}`}>
       <body className="min-h-dvh text-ink antialiased">
@@ -52,17 +48,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {t.nav.skip}
         </a>
         <Providers>
-          <Header
-            t={t.nav}
-            name={site.shortName}
-            email={site.email}
-            whatsapp={site.whatsapp}
-            whatsappDisplay={site.whatsappDisplay}
-            socials={site.socials}
-            timeZone={site.location.timeZone}
-          />
+          <Header t={t.nav} brand={site.name} channels={channels} clock={{ city, timeZone, offset: utcOffsetLabel(timeZone) }} />
           {children}
-          <Footer />
+          <Footer site={site} profile={profile} channels={channels} />
         </Providers>
         <noscript>
           <style>{`[data-reveal]{opacity:1!important;transform:none!important;filter:none!important}`}</style>

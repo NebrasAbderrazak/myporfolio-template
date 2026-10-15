@@ -1,56 +1,58 @@
-import { getDictionary } from "@/i18n";
-import { absoluteUrl, site } from "@/lib/site";
+import type { Project } from "@/content/projects";
+import { absoluteUrl, getHomePage, getProfile, getSite } from "@/content/settings";
 
 function Script({ data }: { data: object }) {
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, "\\u003c") }}
+      dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", ...data }).replace(/</g, "\\u003c") }}
     />
   );
 }
 
 export function PersonJsonLd() {
-  const t = getDictionary();
-  const sameAs = site.socials.filter((s) => !s.placeholder).map((s) => s.href);
-  const skills = t.toolbox.groups.flatMap((g) => g.items.map((i) => i.name));
+  const site = getSite();
+  const profile = getProfile();
+  const skills = getHomePage().toolbox.groups.flatMap((group) => group.tools.map((tool) => tool.name));
+  const sameAs = profile.socials.map((social) => social.url);
 
   return (
     <Script
       data={{
-        "@context": "https://schema.org",
         "@type": "Person",
-        name: site.name,
+        name: profile.name,
         url: site.url,
-        image: absoluteUrl("/me.jpg"),
-        jobTitle: site.jobTitle,
-        description: t.meta.description,
-        ...(site.email.endsWith("example.com") ? {} : { email: `mailto:${site.email}` }),
+        image: absoluteUrl(profile.portrait),
+        jobTitle: profile.role,
+        description: site.description,
+        email: `mailto:${profile.email}`,
         address: {
           "@type": "PostalAddress",
-          addressLocality: site.location.city,
-          addressCountry: site.location.countryCode,
+          addressLocality: profile.location.city,
+          addressCountry: profile.location.countryCode,
         },
-        worksFor: { "@type": "Organization", name: site.company.name, url: site.company.url },
-        knowsAbout: skills,
-        ...(sameAs.length ? { sameAs } : {}),
+        ...(profile.company && {
+          worksFor: { "@type": "Organization", name: profile.company.name, ...(profile.company.url && { url: profile.company.url }) },
+        }),
+        ...(skills.length > 0 && { knowsAbout: skills }),
+        ...(sameAs.length > 0 && { sameAs }),
       }}
     />
   );
 }
 
-export function ProjectJsonLd({ title, summary, slug, date, tags }: { title: string; summary: string; slug: string; date: string; tags: string[] }) {
+export function ProjectJsonLd({ project }: { project: Project }) {
+  const site = getSite();
   return (
     <Script
       data={{
-        "@context": "https://schema.org",
         "@type": "CreativeWork",
-        name: title,
-        description: summary,
-        url: absoluteUrl(`/work/${slug}/`),
-        dateCreated: date,
-        keywords: tags.join(", "),
-        creator: { "@type": "Person", name: site.name, url: site.url },
+        name: project.title,
+        description: project.summary,
+        url: absoluteUrl(`/work/${project.slug}/`),
+        dateCreated: project.date,
+        keywords: project.tags.join(", "),
+        creator: { "@type": "Person", name: getProfile().name, url: site.url },
       }}
     />
   );

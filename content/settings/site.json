@@ -1,0 +1,15 @@
+{
+  "name": "Nebras",
+  "url": "https://example.com",
+  "tagline": "Developer, builder and founder in Gabès, Tunisia",
+  "description": "Self-taught developer in Gabès, Tunisia. I build, deploy and ship software for real businesses. Founder of Jasper Tech.",
+  "contact": {
+    "overline": "Contact",
+    "title": "Have something\nto build? ~*Let’s talk.*~",
+    "intro": "WhatsApp is the fastest way to reach me. Email works too.",
+    "button": "Message me on WhatsApp"
+  },
+  "footer": {
+    "credit": "Designed and built in Gabès, Tunisia."
+  }
+}

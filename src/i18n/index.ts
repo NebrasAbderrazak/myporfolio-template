@@ -10,4 +10,4 @@ export function getDictionary(locale: Locale = defaultLocale): Dictionary {
   return dictionaries[locale];
 }
 
-export type { Dictionary, Segment, Tone } from "./en";
+export type { Dictionary };

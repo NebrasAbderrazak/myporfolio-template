@@ -1,10 +1,9 @@
 ---
-# PLACEHOLDER: replace this file with a real project (or delete it).
 title: "Operations dashboard for a small team"
 summary: "Placeholder entry. An example of a case study for an internal tool: orders, stock and daily numbers in one screen."
 date: "2026-06-15"
 tags: ["React", "JavaScript", "APIs", "Python"]
-cover: "/projects/sample-business-dashboard/cover.jpg"
+cover: "/media/projects/sample-business-dashboard/cover.jpg"
 coverAlt: "Placeholder screen of a dashboard with stat cards and a line chart"
 mockup: "laptop"
 mission: "Placeholder. Write one or two sentences about what the project is for and who it helps."

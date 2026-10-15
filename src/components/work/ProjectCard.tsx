@@ -2,13 +2,13 @@ import Link from "next/link";
 import { ViewTransition } from "react";
 import { Device } from "@/components/media/Device";
 import { Tilt } from "@/components/motion/Tilt";
-import type { Dictionary } from "@/i18n";
-import type { Project } from "@/lib/content";
+import type { Project } from "@/content/projects";
+import { getDictionary } from "@/i18n";
 import { cn } from "@/lib/cn";
+import { PlaceholderBadge } from "./PlaceholderBadge";
 
 type Props = {
   project: Project;
-  t: Dictionary["work"];
   wide?: boolean;
 };
 
@@ -18,7 +18,8 @@ const PLACEMENT = {
   phone: { normal: "top-[9%] w-[34%]", wide: "top-[9%] w-[34%] md:w-[18%]" },
 } as const;
 
-export function ProjectCard({ project, t, wide = false }: Props) {
+export function ProjectCard({ project, wide = false }: Props) {
+  const t = getDictionary().work;
   const href = `/work/${project.slug}/`;
   const kind = project.mockup;
   const sizes = wide ? "(min-width: 768px) 52vw, 92vw" : "(min-width: 768px) 42vw, 92vw";
@@ -63,12 +64,8 @@ export function ProjectCard({ project, t, wide = false }: Props) {
             {project.title}
           </Link>
         </h3>
-        <ul className="flex flex-wrap gap-2" aria-label="Tags">
-          {project.placeholder && (
-            <li className="pill border border-dashed border-line-strong !bg-transparent !shadow-none !text-[0.82rem] text-ink-soft">
-              {t.placeholder}
-            </li>
-          )}
+        <ul className="flex flex-wrap gap-2" aria-label={t.tags}>
+          {project.placeholder && <PlaceholderBadge as="li" />}
           {project.tags.slice(0, 2).map((tag) => (
             <li key={tag} className="pill !text-[0.85rem]">
               {tag}

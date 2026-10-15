@@ -7,21 +7,29 @@ import { Toolbox } from "@/components/sections/Toolbox";
 import { Updates } from "@/components/sections/Updates";
 import { Work } from "@/components/sections/Work";
 import { PersonJsonLd } from "@/components/seo/JsonLd";
-import { getFeaturedProjects, getProjects, getUpdates } from "@/lib/content";
+import { contactChannels } from "@/content/channels";
+import { getFeaturedProjects, getProjects } from "@/content/projects";
+import { getHomePage, getProfile } from "@/content/settings";
+import { getUpdates } from "@/content/updates";
 import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = pageMetadata({ path: "/" });
+export function generateMetadata(): Metadata {
+  return pageMetadata({ path: "/" });
+}
 
 export default function HomePage() {
+  const home = getHomePage();
+  const profile = getProfile();
+
   return (
     <PageTransition>
       <main id="main" tabIndex={-1}>
-        <Hero />
-        <Work projects={getFeaturedProjects()} total={getProjects().length} />
-        <About />
-        <Toolbox />
-        <Updates updates={getUpdates(4)} />
-        <Socials />
+        <Hero content={home.hero} profile={profile} />
+        <Work content={home.work} projects={getFeaturedProjects(home.work.limit)} total={getProjects().length} />
+        <About content={home.about} />
+        <Toolbox content={home.toolbox} />
+        <Updates content={home.updates} updates={getUpdates().slice(0, home.updates.limit)} />
+        <Socials content={home.socials} channels={contactChannels(profile)} />
         <PersonJsonLd />
       </main>
     </PageTransition>
