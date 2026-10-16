@@ -42,7 +42,7 @@ if ($path -notmatch '^/[A-Za-z0-9._/-]+$' -or $path -eq '/') {
 }
 $target = "$($cfg['DEPLOY_USER'])@$($cfg['DEPLOY_HOST'])"
 $keyArgs = @()
-if ($cfg['DEPLOY_SSH_KEY']) { $keyArgs = @('-i', $cfg['DEPLOY_SSH_KEY']) }
+if ($cfg['DEPLOY_SSH_KEY']) { $keyArgs = @('-i', $cfg['DEPLOY_SSH_KEY'], '-o', 'IdentitiesOnly=yes') }
 
 # --- Build ------------------------------------------------------------------
 if (-not $SkipBuild) {
