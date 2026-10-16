@@ -4,13 +4,15 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  # Never cancel a run on main halfway through a deploy.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   verify:
@@ -29,3 +31,83 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
+
+      - name: Keep the build for the deploy job
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v7
+        with:
+          name: site
+          path: out/
+          retention-days: 1
+          if-no-files-found: error
+
+  # Uploads the tested build to the VPS and switches the live version in one step.
+  # Pull requests never reach this job, so forks never see the deploy secrets.
+  deploy:
+    needs: verify
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: production
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: false
+    env:
+      DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+      DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+      DEPLOY_PATH: ${{ vars.DEPLOY_PATH || '/var/www/nebras-portfolio' }}
+      DEPLOY_PORT: ${{ vars.DEPLOY_PORT || '22' }}
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: site
+          path: out
+
+      - name: Check settings
+        run: |
+          missing=0
+          for name in DEPLOY_HOST DEPLOY_USER; do
+            if [ -z "${!name}" ]; then echo "::error::Secret $name is not set"; missing=1; fi
+          done
+          if [[ ! "$DEPLOY_PATH" =~ ^/[A-Za-z0-9._/-]+$ || "$DEPLOY_PATH" == "/" ]]; then
+            echo "::error::DEPLOY_PATH must be an absolute folder like /var/www/nebras-portfolio"; missing=1
+          fi
+          test -f out/index.html || { echo "::error::The build has no index.html"; missing=1; }
+          exit $missing
+
+      - name: Configure SSH
+        env:
+          SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          if [ -z "$SSH_KEY" ] || [ -z "$KNOWN_HOSTS" ]; then
+            echo "::error::Secrets DEPLOY_SSH_KEY and DEPLOY_KNOWN_HOSTS must be set"; exit 1
+          fi
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+      - name: Upload and switch the live version
+        run: |
+          stamp="$(date -u +%Y%m%d-%H%M%S)-${GITHUB_SHA::7}"
+          release="$DEPLOY_PATH/releases/$stamp"
+          archive="/tmp/nebras-portfolio-$stamp.tar.gz"
+          ssh_opts=(-i ~/.ssh/deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o BatchMode=yes)
+
+          tar -czf site.tar.gz -C out .
+          scp -P "$DEPLOY_PORT" "${ssh_opts[@]}" site.tar.gz "$DEPLOY_USER@$DEPLOY_HOST:$archive"
+          ssh -p "$DEPLOY_PORT" "${ssh_opts[@]}" "$DEPLOY_USER@$DEPLOY_HOST" "set -e
+            mkdir -p '$release'
+            tar -xzf '$archive' -C '$release'
+            rm -f '$archive'
+            chmod -R a+rX '$release'
+            ln -sfn '$release' '$DEPLOY_PATH/current.tmp'
+            mv -Tf '$DEPLOY_PATH/current.tmp' '$DEPLOY_PATH/current'
+            cd '$DEPLOY_PATH/releases' && ls -1t | tail -n +6 | xargs -r rm -rf"
+
+          echo "Live: $release" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Remove the SSH key
+        if: always()
+        run: rm -f ~/.ssh/deploy_key

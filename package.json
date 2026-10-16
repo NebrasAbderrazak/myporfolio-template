@@ -12,7 +12,6 @@
     "images": "node scripts/optimize-images.mjs",
     "new:project": "node scripts/new-project.mjs",
     "new:update": "node scripts/new-update.mjs",
-    "deploy": "powershell -NoProfile -ExecutionPolicy Bypass -File deploy/deploy.ps1",
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",

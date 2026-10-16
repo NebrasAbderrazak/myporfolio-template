@@ -61,7 +61,7 @@ commit.
 Only people with write access to the repository can sign in and edit, so a
 public repository is safe. Edits land on `main`; with automatic deploys
 (Cloudflare Pages, or a deploy job in GitHub Actions) the site updates a minute
-later. With the manual VPS deploy below, run `git pull` and `npm run deploy`.
+later. The VPS setup below deploys from GitHub Actions on every push to `main`.
 
 ### Styling words in headings
 
@@ -128,7 +128,6 @@ without an image server. Run `npm run images` after adding a file while
 | `npm test` | Unit tests, plus validation of every file in `content/` |
 | `npm run new:project` / `new:update` | Interactive scaffolders |
 | `npm run images` | Regenerates responsive images |
-| `npm run deploy` | Builds and uploads to the VPS (see below) |
 
 ## Project structure
 
@@ -150,7 +149,7 @@ src/
   lib/                      formatting, metadata, OG rendering, image loader
 tests/                      Vitest suites
 scripts/                    image optimizer, scaffolders, preview server
-deploy/                     nginx config, security headers, deploy script
+deploy/                     nginx config and security headers
 ```
 
 ### How content flows
@@ -165,6 +164,13 @@ props down; components never read files themselves.
 The test suite loads the real files in `content/`, so an invalid edit made in
 the admin panel fails CI before it reaches a deploy.
 
+### CI and deploys
+
+`.github/workflows/ci.yml` runs lint, typecheck, tests and the build on every
+push and pull request. On `main`, a second job uploads that same tested build
+to the VPS. Pull requests never reach the deploy job, so forks never see its
+secrets.
+
 ## Deploy
 
 The build output in `out/` is plain static files and runs on any static host.
@@ -178,73 +184,78 @@ be copied into the host's own format (a `public/_headers` file on Cloudflare).
 
 ### Your own VPS with nginx
 
-These steps assume Ubuntu/Debian. Replace `example.com` with your domain and
-`deploy` with your server user. Run the server commands over SSH yourself;
-nothing in this project stores a password or key.
+Every push to `main` (including admin panel edits) is checked, built and
+deployed by GitHub Actions. These steps assume Ubuntu/Debian with nginx and
+certbot installed. Replace `example.com` with your domain and run the server
+commands yourself as an admin user.
 
-**1. Point the domain at the VPS.** Add an `A` record for `example.com` and
+**1. Point the domain at the VPS.** Add `A` records for `example.com` and
 `www.example.com` with the server IP.
 
-**2. Install nginx and certbot, and create the folder** (on the server):
+**2. Create a deploy key** (on your machine):
 
 ```bash
-sudo apt update && sudo apt install -y nginx certbot python3-certbot-nginx
-sudo mkdir -p /var/www/nebras-portfolio/releases
-sudo chown -R deploy:deploy /var/www/nebras-portfolio
+ssh-keygen -t ed25519 -f ~/.ssh/portfolio_deploy -C "portfolio deploy"
 ```
 
-**3. Copy the nginx config** (from the project folder on your machine):
+**3. Create a deploy user that can only write the site folder** (on the server),
+pasting the contents of `portfolio_deploy.pub`:
 
 ```bash
-scp deploy/nginx/nebras-portfolio.conf deploy/nginx/security-headers.conf deploy@YOUR_SERVER_IP:/tmp/
+sudo adduser --disabled-password --gecos "" nebras
+sudo mkdir -p /home/nebras/.ssh /var/www/nebras-portfolio/releases
+echo "PASTE_PUBLIC_KEY_LINE" | sudo tee /home/nebras/.ssh/authorized_keys
+sudo chmod 700 /home/nebras/.ssh && sudo chmod 600 /home/nebras/.ssh/authorized_keys
+sudo chown -R nebras:nebras /home/nebras/.ssh /var/www/nebras-portfolio
 ```
 
-Then on the server, after replacing `example.com` in the file:
+**4. Install the nginx config** (on the server):
 
 ```bash
-sudo nano /tmp/nebras-portfolio.conf
-sudo mv /tmp/nebras-portfolio.conf /etc/nginx/sites-available/nebras-portfolio
-sudo mv /tmp/security-headers.conf /etc/nginx/snippets/nebras-security-headers.conf
+curl -fsSL https://raw.githubusercontent.com/NebrasAbderrazak/myporfolio-template/main/deploy/nginx/nebras-portfolio.conf | sed 's/example.com/YOUR_DOMAIN/g' | sudo tee /etc/nginx/sites-available/nebras-portfolio >/dev/null
+sudo curl -fsSL https://raw.githubusercontent.com/NebrasAbderrazak/myporfolio-template/main/deploy/nginx/security-headers.conf -o /etc/nginx/snippets/nebras-security-headers.conf
 sudo ln -s /etc/nginx/sites-available/nebras-portfolio /etc/nginx/sites-enabled/
 sudo nginx -t && sudo systemctl reload nginx
 ```
 
 The config sets up gzip, caching (one year for hashed build files, one week for
 images, revalidation for pages), security headers, the 404 page and blocks
-hidden files.
+hidden files. `nginx -t` refuses a broken config, so other sites on the same
+server stay up.
 
-**4. Deploy once** (see below), then open `http://example.com`.
+**5. Add the GitHub secrets** in Settings → Secrets and variables → Actions:
 
-**5. HTTPS with Let's Encrypt** (on the server, once http works):
+| Secret | Value |
+| --- | --- |
+| `DEPLOY_HOST` | Server IP or hostname |
+| `DEPLOY_USER` | The deploy user, e.g. `nebras` |
+| `DEPLOY_SSH_KEY` | The whole private key file `portfolio_deploy`, including the `BEGIN`/`END` lines |
+| `DEPLOY_KNOWN_HOSTS` | Output of `ssh-keygen -F SERVER_IP` on a machine that has already connected, so the workflow only talks to your server |
+
+Optional variables (same page, Variables tab): `DEPLOY_PATH` (default
+`/var/www/nebras-portfolio`) and `DEPLOY_PORT` (default `22`).
+
+**6. Deploy.** Push to `main`, or open Actions → CI → Run workflow. Each deploy
+unpacks into `releases/<time>-<commit>/` and switches the `current` link in one
+step, keeping the last five releases.
+
+**7. HTTPS with Let's Encrypt** (on the server, once http works):
 
 ```bash
 sudo certbot --nginx -d example.com -d www.example.com
-sudo certbot renew --dry-run
 ```
 
-**6. Turn on HSTS** once https works: uncomment the `Strict-Transport-Security`
-line in `/etc/nginx/snippets/nebras-security-headers.conf`, then run
+**8. Turn on HSTS** once https has worked for a few days: uncomment the
+`Strict-Transport-Security` line in
+`/etc/nginx/snippets/nebras-security-headers.conf`, then run
 `sudo nginx -t && sudo systemctl reload nginx`.
 
-#### Every deploy
-
-Copy `.env.deploy.example` to `.env.deploy` once and fill in host, user and
-path (`.env.deploy` is git-ignored). Then:
-
-```bash
-npm run deploy
-```
-
-`deploy/deploy.ps1` builds the site, uploads `out/` with `scp`, unpacks it into
-`releases/<timestamp>/` and switches the `current` link in one step, keeping the
-last five releases. Set `DEPLOY_SSH_KEY` to use a key; otherwise `ssh` asks for
-your password. `npm run deploy -- -SkipBuild` uploads the existing `out/`.
-
-**Rollback** (on the server):
+**Rollback:** re-run an older successful run from the Actions tab, or point
+`current` at an older release on the server:
 
 ```bash
 ls -1t /var/www/nebras-portfolio/releases
-ln -sfn /var/www/nebras-portfolio/releases/OLDER_STAMP /var/www/nebras-portfolio/current
+ln -sfn /var/www/nebras-portfolio/releases/OLDER_RELEASE /var/www/nebras-portfolio/current
 ```
 
 ## Motion and accessibility

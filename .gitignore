@@ -44,9 +44,6 @@ next-env.d.ts
 /public/_img/
 /src/generated/
 
-# deploy settings stay on your machine
-.env.deploy
-!.env.deploy.example
 
 # review screenshots
 /screenshots/
