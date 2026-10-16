@@ -1,7 +1,7 @@
 {
   "name": "Nebras",
   "role": "Developer & Founder",
-  "portrait": "/media/portrait.jpg",
+  "portrait": "/media/photo2026-10-1602-17-20.jpg",
   "portraitAlt": "Portrait of Nebras",
   "status": "Building Jasper Tech",
   "location": {
@@ -16,6 +16,5 @@
     "url": "https://jaspertech.tn"
   },
   "email": "hello@example.com",
-  "whatsapp": "+216 24 746 277",
-  "socials": []
+  "whatsapp": "+216 24 746 277"
 }
