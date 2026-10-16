@@ -104,6 +104,32 @@ content:
             label: Portrait description
             type: string
             description: For screen readers, e.g. "Portrait of Nebras".
+          - name: portraitFraming
+            label: Portrait framing
+            type: object
+            description: Choose which part of the photo shows in the circle. Point at your face, then zoom in for a head-and-shoulders crop.
+            fields:
+              - name: x
+                label: Focus left → right (%)
+                type: number
+                description: 0 = left edge, 50 = centre, 100 = right edge.
+                options:
+                  min: 0
+                  max: 100
+              - name: y
+                label: Focus top → bottom (%)
+                type: number
+                description: 0 = top edge, 50 = middle, 100 = bottom edge. Faces in full-body photos are usually around 15–25.
+                options:
+                  min: 0
+                  max: 100
+              - name: zoom
+                label: Zoom
+                type: number
+                description: 1 = whole photo width, 1.5 = closer, 2 = very close.
+                options:
+                  min: 1
+                  max: 4
           - name: status
             label: Status
             type: string

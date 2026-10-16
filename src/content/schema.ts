@@ -60,6 +60,13 @@ export const profileSchema = z.object({
   role: text,
   portrait: assetPath,
   portraitAlt: optional(text),
+  portraitFraming: z
+    .object({
+      x: z.number().min(0).max(100).default(50),
+      y: z.number().min(0).max(100).default(35),
+      zoom: z.number().min(1).max(4).default(1),
+    })
+    .default({ x: 50, y: 35, zoom: 1 }),
   status: optional(text),
   location: z.object({
     city: text,

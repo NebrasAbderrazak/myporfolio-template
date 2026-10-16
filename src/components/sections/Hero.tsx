@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { Picture } from "@/components/media/Picture";
+import { FramedImage } from "@/components/media/FramedImage";
 import { MagneticButton } from "@/components/motion/MagneticButton";
 import { ScrollAway } from "@/components/motion/ScrollAway";
 import { EnterWords } from "@/components/typography/EnterWords";
@@ -25,11 +25,11 @@ export function Hero({ content, profile }: Props) {
       <ScrollAway>
         <div className="shell flex flex-col items-center text-center">
           <HeroPortrait>
-            <Picture
+            <FramedImage
               src={profile.portrait}
+              framing={profile.portraitFraming}
               alt={profile.portraitAlt ?? profile.name}
-              fill
-              sizes="(min-width: 768px) 200px, 152px"
+              sizes={`(min-width: 768px) ${Math.round(200 * profile.portraitFraming.zoom)}px, ${Math.round(152 * profile.portraitFraming.zoom)}px`}
               loading="eager"
               fetchPriority="high"
               className="object-cover"

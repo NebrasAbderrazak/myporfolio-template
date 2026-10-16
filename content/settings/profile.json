@@ -3,6 +3,11 @@
   "role": "Developer & Founder",
   "portrait": "/media/photo2026-10-1602-17-20.jpg",
   "portraitAlt": "Portrait of Nebras",
+  "portraitFraming": {
+    "x": 61,
+    "y": 25,
+    "zoom": 1.35
+  },
   "status": "Building Jasper Tech",
   "location": {
     "city": "Gabès",

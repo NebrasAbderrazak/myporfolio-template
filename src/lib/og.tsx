@@ -5,7 +5,10 @@ import { ImageResponse } from "next/og";
 import type { ReactNode } from "react";
 import type { Emphasis, Tone } from "@/content/emphasis";
 import type { Project } from "@/content/projects";
+import type { Profile } from "@/content/schema";
 import { getHomePage, getProfile, getSite } from "@/content/settings";
+import { placeImage } from "@/lib/framing";
+import { getImageMeta } from "@/lib/images";
 
 export const OG_SIZE = { width: 1200, height: 630 };
 
@@ -113,6 +116,22 @@ function Headline({ value }: { value: Emphasis }) {
   );
 }
 
+function Portrait({ src, meta, framing, size }: { src: string; meta?: { width: number; height: number }; framing: Profile["portraitFraming"]; size: number }) {
+  const place = placeImage(meta ?? { width: 1, height: 1 }, framing);
+  return (
+    <div style={{ display: "flex", position: "relative", width: size, height: size, borderRadius: 999, overflow: "hidden" }}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={src}
+        alt=""
+        width={place.width * size}
+        height={place.height * size}
+        style={{ position: "absolute", left: place.left * size, top: place.top * size, objectFit: "cover" }}
+      />
+    </div>
+  );
+}
+
 export async function homeOgImage() {
   const profile = getProfile();
   const [fonts, portrait] = await Promise.all([loadFonts(), loadImage(profile.portrait)]);
@@ -124,8 +143,7 @@ export async function homeOgImage() {
           <Headline value={getHomePage().hero.headline} />
           {portrait && (
             <div style={{ display: "flex", padding: 8, borderRadius: 999, background: COLORS.card, boxShadow: "0 30px 60px -24px rgba(18,20,17,.35)" }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={portrait} width={230} height={230} style={{ borderRadius: 999, objectFit: "cover" }} alt="" />
+              <Portrait src={portrait} meta={getImageMeta(profile.portrait)} framing={profile.portraitFraming} size={230} />
             </div>
           )}
         </div>
