@@ -19,11 +19,6 @@ components:
     description: "Each line is shown on its own line. Style words with ~muted~, *italic* and ==accent==."
     required: true
 
-  overline:
-    type: string
-    label: Small label above the heading
-    required: true
-
 content:
   - name: settings
     label: Settings
@@ -59,8 +54,6 @@ content:
             label: Contact section (footer, on every page)
             type: object
             fields:
-              - name: overline
-                component: overline
               - name: title
                 label: Heading
                 component: multiline-heading
@@ -235,8 +228,6 @@ content:
             label: Selected work
             type: object
             fields:
-              - name: overline
-                component: overline
               - name: title
                 component: heading
               - name: limit
@@ -247,8 +238,6 @@ content:
             label: About
             type: object
             fields:
-              - name: overline
-                component: overline
               - name: bio
                 label: Bio
                 type: text
@@ -273,8 +262,6 @@ content:
             label: Toolbox
             type: object
             fields:
-              - name: overline
-                component: overline
               - name: title
                 component: heading
               - name: intro
@@ -307,8 +294,6 @@ content:
             label: Updates
             type: object
             fields:
-              - name: overline
-                component: overline
               - name: title
                 component: heading
               - name: intro
@@ -320,8 +305,6 @@ content:
             label: Elsewhere
             type: object
             fields:
-              - name: overline
-                component: overline
               - name: title
                 component: heading
 
@@ -331,8 +314,6 @@ content:
         path: content/pages/work.json
         format: json
         fields:
-          - name: overline
-            component: overline
           - name: title
             component: heading
           - name: intro
@@ -344,8 +325,6 @@ content:
         path: content/pages/updates.json
         format: json
         fields:
-          - name: overline
-            component: overline
           - name: title
             component: heading
           - name: intro

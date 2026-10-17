@@ -14,7 +14,7 @@ export function Updates({ content, updates }: { content: HomePage["updates"]; up
       <div className="grid gap-12 md:grid-cols-12 md:gap-8">
         <div className="md:col-span-4">
           <div className="md:sticky md:top-32">
-            <SectionHeading id="updates-title" overline={content.overline} title={content.title} align="left" size="md" />
+            <SectionHeading id="updates-title" title={content.title} align="left" size="md" />
             <Reveal delay={0.12}>
               {content.intro && <p className="mt-5 max-w-xs text-[1.05rem] text-ink-soft">{content.intro}</p>}
               <ArrowLink href="/updates/" className="mt-8">

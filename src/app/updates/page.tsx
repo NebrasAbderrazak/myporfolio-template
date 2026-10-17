@@ -18,7 +18,7 @@ export default function UpdatesPage() {
   return (
     <PageTransition>
       <main id="main" tabIndex={-1} className="pt-36 md:pt-44">
-        <ListingHeader content={getUpdatesPage()} count={updates.length} />
+        <ListingHeader content={getUpdatesPage()} />
         <div className="shell mt-16 grid md:mt-24 md:grid-cols-12">
           <div className="md:col-span-10 md:col-start-2 lg:col-span-8 lg:col-start-3">
             <Timeline updates={updates} />

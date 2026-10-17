@@ -8,7 +8,6 @@ export const en = {
     menu: "Menu",
     close: "Close",
     home: "Home",
-    talk: "Let’s talk",
     links: [
       { id: "work", label: "Work" },
       { id: "about", label: "About" },
@@ -19,6 +18,9 @@ export const en = {
     getInTouch: "Get in touch",
     elsewhere: "Elsewhere",
     localTime: "Local time in",
+  },
+  sections: {
+    about: "About me",
   },
   work: {
     viewAll: "All projects",
@@ -33,7 +35,6 @@ export const en = {
     mission: "Mission",
     builtWith: "Built with",
     role: "My role",
-    seeAlso: "See also",
     more: "More ~*projects*~",
   },
   updates: {

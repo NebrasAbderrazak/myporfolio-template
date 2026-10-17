@@ -13,7 +13,7 @@ export function Socials({ content, channels }: { content: HomePage["socials"]; c
 
   return (
     <section id="elsewhere" aria-labelledby="elsewhere-title" className="shell pt-32 md:pt-52">
-      <SectionHeading id="elsewhere-title" overline={content.overline} title={content.title} />
+      <SectionHeading id="elsewhere-title" title={content.title} />
 
       <RevealGroup as="ul" className="mt-14 grid gap-4 sm:grid-cols-2 md:mt-20 lg:grid-cols-3 lg:gap-5" stagger={0.07}>
         {channels.map((channel) => (

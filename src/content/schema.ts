@@ -38,7 +38,7 @@ const timeZone = text.refine((value) => {
 
 const limit = (fallback: number) => z.preprocess(blankToUndefined, z.number().int().min(1).max(24).default(fallback));
 
-const sectionHeading = { overline: text, title: emphasis };
+const sectionHeading = { title: emphasis };
 
 export const SOCIAL_PLATFORMS = ["linkedin", "github", "x", "instagram", "website"] as const;
 export type SocialPlatform = (typeof SOCIAL_PLATFORMS)[number];
@@ -100,7 +100,6 @@ export const homePageSchema = z.object({
   }),
   work: z.object({ ...sectionHeading, limit: limit(6) }),
   about: z.object({
-    overline: text,
     bio: text,
     facts: z.array(z.object({ label: text, value: text })).default([]),
   }),

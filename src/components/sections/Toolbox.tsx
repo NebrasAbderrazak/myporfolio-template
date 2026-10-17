@@ -10,7 +10,7 @@ export function Toolbox({ content }: { content: HomePage["toolbox"] }) {
     <section id="toolbox" aria-labelledby="toolbox-title" className="pt-32 md:pt-52">
       <div className="shell grid gap-6 md:grid-cols-12 md:items-end md:gap-8">
         <div className="md:col-span-8">
-          <SectionHeading id="toolbox-title" overline={content.overline} title={content.title} align="left" />
+          <SectionHeading id="toolbox-title" title={content.title} align="left" />
         </div>
         {content.intro && (
           <Reveal className="md:col-span-4" delay={0.15}>

@@ -18,7 +18,7 @@ export default function WorkIndexPage() {
   return (
     <PageTransition>
       <main id="main" tabIndex={-1} className="pt-36 md:pt-44">
-        <ListingHeader content={getWorkPage()} count={projects.length} />
+        <ListingHeader content={getWorkPage()} />
         <div className="shell mt-16 md:mt-24">
           <ProjectGrid projects={projects} />
         </div>

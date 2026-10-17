@@ -37,7 +37,7 @@ describe("siteSchema", () => {
     url: "https://ada.dev/",
     tagline: "Developer",
     description: "Hi.",
-    contact: { overline: "Contact", title: "Let’s ~*talk*~", button: "Message me" },
+    contact: { title: "Let’s ~*talk*~", button: "Message me" },
     footer: {},
   };
 

@@ -2,7 +2,6 @@ import Link from "next/link";
 import { BlurWords } from "@/components/motion/BlurWords";
 import { ExpandPanel, RisingWordmark } from "@/components/motion/ExpandPanel";
 import { MagneticButton } from "@/components/motion/MagneticButton";
-import { Overline } from "@/components/motion/Overline";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { CopyEmail } from "@/components/ui/CopyEmail";
 import { ExternalAnchor } from "@/components/ui/ExternalAnchor";
@@ -29,8 +28,7 @@ export function Footer({ site, profile, channels }: Props) {
         <div aria-hidden className="beams-dark" />
 
         <div className="shell relative flex flex-col items-center pb-16 pt-24 text-center md:pb-24 md:pt-36">
-          <Overline dark>{contact.overline}</Overline>
-          <h2 id="contact-title" className="display-xl mt-8 md:mt-10">
+          <h2 id="contact-title" className="display-xl">
             <BlurWords value={contact.title} />
           </h2>
           {contact.intro && <p className="mt-7 max-w-md text-[1.08rem] text-white/60 md:text-[1.15rem]">{contact.intro}</p>}

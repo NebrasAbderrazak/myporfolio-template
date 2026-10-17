@@ -19,7 +19,7 @@ export function Work({ content, projects, total }: Props) {
     <section id="work" aria-labelledby="work-title" className="shell pt-28 md:pt-40">
       <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
         <div>
-          <SectionHeading id="work-title" overline={content.overline} title={content.title} align="left" />
+          <SectionHeading id="work-title" title={content.title} align="left" />
         </div>
         <Reveal delay={0.2}>
           <ArrowLink href="/work/" size="lg">

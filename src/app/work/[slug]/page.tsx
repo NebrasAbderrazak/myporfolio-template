@@ -64,7 +64,7 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
 
         {more.length > 0 && (
           <section aria-labelledby="more-title" className="shell mt-32 md:mt-48">
-            <SectionHeading id="more-title" overline={t.seeAlso} title={parseEmphasis(t.more)} />
+            <SectionHeading id="more-title" title={parseEmphasis(t.more)} />
             <ul className="mt-14 grid gap-x-8 gap-y-14 md:mt-20 md:grid-cols-2">
               {more.map((next, i) => (
                 <CardReveal key={next.slug} delay={i * 0.12}>

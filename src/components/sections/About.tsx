@@ -1,17 +1,19 @@
-import { Overline } from "@/components/motion/Overline";
 import { RevealGroup, RevealItem } from "@/components/motion/Reveal";
 import { ScrollWords } from "@/components/motion/ScrollWords";
 import type { HomePage } from "@/content/schema";
+import { getDictionary } from "@/i18n";
 
 export function About({ content }: { content: HomePage["about"] }) {
+  const t = getDictionary().sections;
+
   return (
     <section id="about" aria-labelledby="about-title" className="shell pt-32 md:pt-52">
-      <Overline as="h2" id="about-title">
-        {content.overline}
-      </Overline>
+      <h2 id="about-title" className="sr-only">
+        {t.about}
+      </h2>
       <ScrollWords
         text={content.bio}
-        className="mx-auto mt-10 max-w-[30ch] text-center font-serif text-[clamp(2.1rem,4.6vw,4.4rem)] leading-[1.06] tracking-[-0.01em] text-ink md:mt-14"
+        className="mx-auto max-w-[30ch] text-center font-serif text-[clamp(2.1rem,4.6vw,4.4rem)] leading-[1.06] tracking-[-0.01em] text-ink"
       />
 
       {content.facts.length > 0 && (

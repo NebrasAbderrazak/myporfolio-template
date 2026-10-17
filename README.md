@@ -262,7 +262,7 @@ ln -sfn /var/www/nebras-portfolio/releases/OLDER_RELEASE /var/www/nebras-portfol
 
 - **Hero:** words blur into focus with CSS (so it plays before JavaScript), then
   the hero sinks back as you scroll.
-- **Headings:** words blur in on scroll; overlines draw their hairlines outward.
+- **Headings:** words blur in as they scroll into view and blur out as they leave.
 - **Project cards:** rise in, the laptop lid opens, devices tilt toward the
   mouse, and opening a project morphs the card into the case-study cover with
   the View Transitions API.

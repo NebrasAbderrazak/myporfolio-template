@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
+import { AnimatePresence, useMotionValueEvent, useReducedMotion, useScroll } from "motion/react";
 import * as m from "motion/react-m";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -30,9 +30,7 @@ export function Header({ t, brand, channels, clock }: Props) {
   const router = useRouter();
   const onHome = pathname === "/";
   const reduce = useReducedMotion();
-  const { scrollY, scrollYProgress } = useScroll();
-  const progress = useSpring(scrollYProgress, { stiffness: 220, damping: 40, restDelta: 0.001 });
-  const ringOpacity = useTransform(scrollYProgress, [0, 0.015], [0, 1]);
+  const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
   const [openOn, setOpenOn] = useState<string | null>(null);
   const open = openOn === pathname;
@@ -117,18 +115,6 @@ export function Header({ t, brand, channels, clock }: Props) {
           </Link>
 
           <div className="pointer-events-auto flex items-center gap-2.5">
-            <a
-              href="#contact"
-              onClick={goTo("contact")}
-              className={cn(
-                "pill hidden !py-2.5 !pl-4 !pr-5 !text-[0.95rem] transition-[opacity,transform] duration-500 hover:-translate-y-0.5 sm:inline-flex",
-                open && "pointer-events-none opacity-0",
-              )}
-            >
-              <span aria-hidden className="status-dot relative size-2 rounded-full bg-accent-bright" />
-              {t.talk}
-            </a>
-
             <button
               ref={toggleRef}
               type="button"
@@ -138,18 +124,6 @@ export function Header({ t, brand, channels, clock }: Props) {
               aria-label={open ? t.close : t.menu}
               className="group relative grid size-12 place-items-center rounded-full bg-card shadow-soft ring-1 ring-black/[0.06] transition-transform duration-500 ease-out-expo hover:scale-105 md:size-[3.25rem]"
             >
-              <svg aria-hidden viewBox="0 0 52 52" className="pointer-events-none absolute inset-0 size-full -rotate-90">
-                <m.circle
-                  cx="26"
-                  cy="26"
-                  r="24.5"
-                  fill="none"
-                  stroke="var(--color-accent-bright)"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  style={{ pathLength: reduce ? scrollYProgress : progress, opacity: open ? 0 : ringOpacity }}
-                />
-              </svg>
               <span aria-hidden className="relative block h-2.5 w-[1.15rem]">
                 <span
                   className={cn(
