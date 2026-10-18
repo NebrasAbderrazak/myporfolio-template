@@ -50,6 +50,17 @@ content:
             type: text
             description: One or two sentences for search engines and link previews.
             required: true
+          - name: background
+            label: Background
+            type: select
+            description: The animated layer behind every page. Add ?background=dots (or another value) to any page address to preview a style first.
+            options:
+              values:
+                - { name: light, label: Sunlit paper (soft drifting light) }
+                - { name: shade, label: Leaf shade (swaying dappled shadows) }
+                - { name: dots, label: Dot grid (dots swell under the cursor) }
+                - { name: contours, label: Contour map (topographic lines) }
+                - { name: none, label: None (still light beams) }
           - name: contact
             label: Contact section (footer, on every page)
             type: object

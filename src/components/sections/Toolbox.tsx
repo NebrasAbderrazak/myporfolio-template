@@ -1,5 +1,6 @@
 import { Marquee } from "@/components/motion/Marquee";
-import { Reveal, RevealGroup, RevealItem } from "@/components/motion/Reveal";
+import { MaskWords } from "@/components/motion/MaskWords";
+import { RevealGroup, RevealItem } from "@/components/motion/Reveal";
 import type { HomePage } from "@/content/schema";
 import { SectionHeading } from "./SectionHeading";
 
@@ -13,9 +14,9 @@ export function Toolbox({ content }: { content: HomePage["toolbox"] }) {
           <SectionHeading id="toolbox-title" title={content.title} align="left" />
         </div>
         {content.intro && (
-          <Reveal className="md:col-span-4" delay={0.15}>
-            <p className="max-w-sm text-[1.05rem] text-ink-soft md:ml-auto">{content.intro}</p>
-          </Reveal>
+          <div className="md:col-span-4">
+            <MaskWords text={content.intro} delay={0.15} className="max-w-sm text-[1.05rem] text-ink-soft md:ml-auto" />
+          </div>
         )}
       </div>
 

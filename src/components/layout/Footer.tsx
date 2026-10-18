@@ -2,6 +2,7 @@ import Link from "next/link";
 import { BlurWords } from "@/components/motion/BlurWords";
 import { ExpandPanel, RisingWordmark } from "@/components/motion/ExpandPanel";
 import { MagneticButton } from "@/components/motion/MagneticButton";
+import { MaskWords } from "@/components/motion/MaskWords";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { CopyEmail } from "@/components/ui/CopyEmail";
 import { ExternalAnchor } from "@/components/ui/ExternalAnchor";
@@ -31,7 +32,7 @@ export function Footer({ site, profile, channels }: Props) {
           <h2 id="contact-title" className="display-xl">
             <BlurWords value={contact.title} />
           </h2>
-          {contact.intro && <p className="mt-7 max-w-md text-[1.08rem] text-white/60 md:text-[1.15rem]">{contact.intro}</p>}
+          {contact.intro && <MaskWords text={contact.intro} delay={0.2} className="mt-7 max-w-md text-[1.08rem] text-white/60 md:text-[1.15rem]" />}
           <div className="mt-10">
             <MagneticButton
               href={whatsapp?.href ?? `mailto:${profile.email}`}

@@ -47,13 +47,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           {t.nav.skip}
         </a>
-        <Providers>
+        <Providers background={site.background}>
           <Header t={t.nav} brand={site.name} channels={channels} clock={{ city, timeZone, offset: utcOffsetLabel(timeZone) }} />
           {children}
           <Footer site={site} profile={profile} channels={channels} />
         </Providers>
         <noscript>
-          <style>{`[data-reveal]{opacity:1!important;transform:none!important;filter:none!important}`}</style>
+          <style>{`[data-reveal]{opacity:1!important;transform:none!important;filter:none!important;clip-path:none!important}`}</style>
         </noscript>
       </body>
     </html>

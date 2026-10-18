@@ -260,10 +260,18 @@ ln -sfn /var/www/nebras-portfolio/releases/OLDER_RELEASE /var/www/nebras-portfol
 
 ## Motion and accessibility
 
+- **Background:** an animated WebGL layer behind every page, set in the admin
+  panel under Settings → Site → Background: Sunlit paper, Leaf shade, Dot grid,
+  Contour map or None. Add `?background=dots` (or another value) to any page
+  address to preview a style for that browser tab. It reacts to the cursor,
+  moves slower than the page when you scroll, starts on the first interaction,
+  pauses in background tabs, and falls back to CSS light beams on software
+  rendering, slow devices or with "reduce motion" on.
+- **Intros:** paragraph words slide up out of their own line masks.
 - **Hero:** words blur into focus with CSS (so it plays before JavaScript), then
   the hero sinks back as you scroll.
 - **Headings:** words blur in as they scroll into view and blur out as they leave.
-- **Project cards:** rise in, the laptop lid opens, devices tilt toward the
+- **Project cards:** rise in and open like a window (clip-path wipe), the laptop lid opens, devices tilt toward the
   mouse, and opening a project morphs the card into the case-study cover with
   the View Transitions API.
 - **About:** the bio lights up word by word as you scroll.

@@ -44,6 +44,9 @@ export const SOCIAL_PLATFORMS = ["linkedin", "github", "x", "instagram", "websit
 export type SocialPlatform = (typeof SOCIAL_PLATFORMS)[number];
 
 export const MOCKUPS = ["laptop", "browser", "phone", "none"] as const;
+
+export const BACKGROUND_STYLES = ["light", "shade", "dots", "contours", "none"] as const;
+export type BackgroundStyle = (typeof BACKGROUND_STYLES)[number];
 export type Mockup = (typeof MOCKUPS)[number];
 
 export const siteSchema = z.object({
@@ -51,6 +54,7 @@ export const siteSchema = z.object({
   url: httpUrl.transform((url) => url.replace(/\/+$/, "")),
   tagline: text,
   description: text,
+  background: z.preprocess(blankToUndefined, z.enum(BACKGROUND_STYLES).default("light")),
   contact: z.object({ ...sectionHeading, intro: optional(text), button: text }),
   footer: z.object({ credit: optional(text) }),
 });

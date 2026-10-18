@@ -1,3 +1,4 @@
+import { MaskWords } from "@/components/motion/MaskWords";
 import { Reveal } from "@/components/motion/Reveal";
 import { ArrowLink } from "@/components/ui/ArrowLink";
 import { Timeline } from "@/components/updates/Timeline";
@@ -15,8 +16,8 @@ export function Updates({ content, updates }: { content: HomePage["updates"]; up
         <div className="md:col-span-4">
           <div className="md:sticky md:top-32">
             <SectionHeading id="updates-title" title={content.title} align="left" size="md" />
-            <Reveal delay={0.12}>
-              {content.intro && <p className="mt-5 max-w-xs text-[1.05rem] text-ink-soft">{content.intro}</p>}
+            {content.intro && <MaskWords text={content.intro} delay={0.1} className="mt-5 max-w-xs text-[1.05rem] text-ink-soft" />}
+            <Reveal delay={0.2}>
               <ArrowLink href="/updates/" className="mt-8">
                 {t.all}
               </ArrowLink>
