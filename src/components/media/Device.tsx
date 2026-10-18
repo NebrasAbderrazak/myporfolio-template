@@ -1,0 +1,70 @@
+import { LaptopHinge } from "@/components/motion/Hinge";
+import { Picture } from "@/components/media/Picture";
+import { cn } from "@/lib/cn";
+
+export type DeviceKind = "laptop" | "phone" | "browser" | "none";
+
+type Props = {
+  kind: DeviceKind;
+  src?: string;
+  alt: string;
+  sizes: string;
+  open?: boolean;
+  priority?: boolean;
+  fallback?: string;
+  className?: string;
+};
+
+export function Device({ kind, src, alt, sizes, open = false, priority, fallback = "", className }: Props) {
+  const screen = src ? (
+    <Picture
+      src={src}
+      alt={alt}
+      fill
+      sizes={sizes}
+      className="object-cover object-top"
+      {...(priority ? { loading: "eager" as const, fetchPriority: "high" as const } : {})}
+    />
+  ) : (
+    <div className="absolute inset-0 flex items-center justify-center bg-ink">
+      <span className="font-serif text-[clamp(2.5rem,8vw,7rem)] italic leading-none text-paper/90">{fallback.charAt(0)}</span>
+    </div>
+  );
+
+  if (kind === "phone") {
+    return (
+      <div className={cn("device-phone", className)}>
+        <div className="screen">
+          <span className="island" aria-hidden />
+          {screen}
+        </div>
+      </div>
+    );
+  }
+
+  if (kind === "browser") {
+    return (
+      <div className={cn("device-browser", className)}>
+        <div className="bar" aria-hidden>
+          <i />
+          <i />
+          <i />
+        </div>
+        <div className="screen">{screen}</div>
+      </div>
+    );
+  }
+
+  if (kind === "none") {
+    return <div className={cn("relative aspect-[16/10] overflow-hidden rounded-2xl", className)}>{screen}</div>;
+  }
+
+  const lid = <div className="screen">{screen}</div>;
+  if (open) return <LaptopHinge className={className}>{lid}</LaptopHinge>;
+  return (
+    <div className={cn("device-laptop", className)}>
+      <div className="lid">{lid}</div>
+      <div className="base" aria-hidden />
+    </div>
+  );
+}

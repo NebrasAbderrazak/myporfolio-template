@@ -1,0 +1,6 @@
+.next/
+out/
+public/
+src/generated/
+content/
+package-lock.json

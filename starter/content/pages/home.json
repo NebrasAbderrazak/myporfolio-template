@@ -1,0 +1,82 @@
+{
+  "hero": {
+    "headline": "~I’m a~ Developer,\nBuilder ~*and*~ ==*Maker*==",
+    "intro": "~Replace this line with~ who you are ~and~ what you build.",
+    "primaryButton": "See my work",
+    "secondaryButton": "Contact me"
+  },
+  "work": {
+    "title": "Things I’ve ~*built & shipped*~",
+    "limit": 6
+  },
+  "about": {
+    "bio": "Write a short bio here. It lights up word by word as visitors scroll, so a few honest sentences work better than a long list.",
+    "facts": [
+      {
+        "label": "Based in",
+        "value": "Your city"
+      },
+      {
+        "label": "Working on",
+        "value": "Your current focus"
+      },
+      {
+        "label": "I work on",
+        "value": "Websites, apps and tools"
+      }
+    ]
+  },
+  "toolbox": {
+    "title": "The stack ~*behind the work*~",
+    "intro": "The tools you reach for, and what you use each one for.",
+    "groups": [
+      {
+        "name": "Build",
+        "tools": [
+          {
+            "name": "TypeScript",
+            "note": "Typed front-end and back-end code."
+          },
+          {
+            "name": "React",
+            "note": "Interfaces with a lot of state."
+          },
+          {
+            "name": "Node.js",
+            "note": "APIs and small services."
+          }
+        ]
+      },
+      {
+        "name": "Ship",
+        "tools": [
+          {
+            "name": "Linux & nginx",
+            "note": "Servers, HTTPS and deploys."
+          },
+          {
+            "name": "GitHub Actions",
+            "note": "Checks and automatic deploys."
+          }
+        ]
+      },
+      {
+        "name": "Think",
+        "tools": [
+          {
+            "name": "Product sense",
+            "note": "Building what people actually need."
+          }
+        ]
+      }
+    ]
+  },
+  "updates": {
+    "title": "Notes from ~*the workbench*~",
+    "intro": "Short posts about what you are building, shipping and learning.",
+    "limit": 4
+  },
+  "socials": {
+    "title": "Find me ~*here*~"
+  }
+}

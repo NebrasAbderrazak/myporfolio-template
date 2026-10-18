@@ -1,0 +1,20 @@
+{
+  "name": "Your Name",
+  "role": "Developer",
+  "portrait": "/media/starter/portrait.jpg",
+  "portraitAlt": "Portrait placeholder",
+  "portraitFraming": {
+    "x": 50,
+    "y": 35,
+    "zoom": 1
+  },
+  "status": "Open to new projects",
+  "location": {
+    "city": "Your city",
+    "country": "Your country",
+    "countryCode": "XX",
+    "timeZone": "UTC"
+  },
+  "email": "hello@example.com",
+  "socials": []
+}

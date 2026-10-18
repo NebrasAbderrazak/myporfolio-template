@@ -1,0 +1,15 @@
+{
+  "name": "Your Name",
+  "url": "https://example.com",
+  "tagline": "Developer and builder",
+  "description": "Portfolio of a developer who designs, builds and ships software. Replace this with one or two sentences about you.",
+  "background": "shade",
+  "contact": {
+    "title": "Have something\nto build? ~*Let’s talk.*~",
+    "intro": "Email is the best way to reach me.",
+    "button": "Message me on WhatsApp"
+  },
+  "footer": {
+    "credit": "Built with this open-source portfolio template."
+  }
+}
