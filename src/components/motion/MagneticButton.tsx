@@ -28,15 +28,7 @@ const STYLES = {
   light: { button: "bg-paper text-ink shadow-button", fill: "bg-accent-bright", hoverText: "" },
 };
 
-export function MagneticButton({
-  href,
-  children,
-  variant = "solid",
-  external,
-  halo,
-  className,
-  icon = "arrow-right",
-}: Props) {
+export function MagneticButton({ href, children, variant = "solid", external, halo, className, icon = "arrow-right" }: Props) {
   const fine = useFinePointer();
   const reduce = useReducedMotion();
   const magnetic = fine && !reduce;

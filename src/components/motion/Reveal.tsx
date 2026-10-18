@@ -11,8 +11,7 @@ const EXIT: Transition = { duration: 0.55, ease: [0.4, 0, 1, 1] };
 
 type Pose = Record<string, string | number>;
 
-/** Variants for an element that rises in from below and drifts up and out once scrolled past. */
-export function presence(below: Pose, inside: Pose, above: Pose, enter: Transition = ENTER): Variants {
+function presence(below: Pose, inside: Pose, above: Pose, enter: Transition = ENTER): Variants {
   return {
     below: { ...below, transition: EXIT },
     inside: { ...inside, transition: enter },
@@ -20,7 +19,11 @@ export function presence(below: Pose, inside: Pose, above: Pose, enter: Transiti
   };
 }
 
-const ITEM_POSES: [Pose, Pose, Pose] = [{ opacity: 0, y: 26 }, { opacity: 1, y: 0 }, { opacity: 0, y: -26 }];
+const ITEM_POSES: [Pose, Pose, Pose] = [
+  { opacity: 0, y: 26 },
+  { opacity: 1, y: 0 },
+  { opacity: 0, y: -26 },
+];
 const itemVariants = presence(...ITEM_POSES);
 
 const cardBelow = { opacity: 0, y: 80, scale: 0.94 };

@@ -116,7 +116,17 @@ function Headline({ value }: { value: Emphasis }) {
   );
 }
 
-function Portrait({ src, meta, framing, size }: { src: string; meta?: { width: number; height: number }; framing: Profile["portraitFraming"]; size: number }) {
+function Portrait({
+  src,
+  meta,
+  framing,
+  size,
+}: {
+  src: string;
+  meta?: { width: number; height: number };
+  framing: Profile["portraitFraming"];
+  size: number;
+}) {
   const place = placeImage(meta ?? { width: 1, height: 1 }, framing);
   return (
     <div style={{ display: "flex", position: "relative", width: size, height: size, borderRadius: 999, overflow: "hidden" }}>
@@ -137,18 +147,24 @@ export async function homeOgImage() {
   const [fonts, portrait] = await Promise.all([loadFonts(), loadImage(profile.portrait)]);
 
   return new ImageResponse(
-    (
-      <Frame>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 40 }}>
-          <Headline value={getHomePage().hero.headline} />
-          {portrait && (
-            <div style={{ display: "flex", padding: 8, borderRadius: 999, background: COLORS.card, boxShadow: "0 30px 60px -24px rgba(18,20,17,.35)" }}>
-              <Portrait src={portrait} meta={getImageMeta(profile.portrait)} framing={profile.portraitFraming} size={230} />
-            </div>
-          )}
-        </div>
-      </Frame>
-    ),
+    <Frame>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 40 }}>
+        <Headline value={getHomePage().hero.headline} />
+        {portrait && (
+          <div
+            style={{
+              display: "flex",
+              padding: 8,
+              borderRadius: 999,
+              background: COLORS.card,
+              boxShadow: "0 30px 60px -24px rgba(18,20,17,.35)",
+            }}
+          >
+            <Portrait src={portrait} meta={getImageMeta(profile.portrait)} framing={profile.portraitFraming} size={230} />
+          </div>
+        )}
+      </div>
+    </Frame>,
     { ...OG_SIZE, fonts },
   );
 }
@@ -158,29 +174,46 @@ export async function projectOgImage(project: Pick<Project, "title" | "year" | "
   const titleSize = project.title.length > 34 ? 84 : 104;
 
   return new ImageResponse(
-    (
-      <Frame>
-        <div style={{ display: "flex", alignItems: "center", gap: 48 }}>
-          <div style={{ display: "flex", flexDirection: "column", flex: 1, gap: 22 }}>
-            <div style={{ display: "flex", fontSize: 30, fontStyle: "italic", color: COLORS.mute }}>Case study · {project.year}</div>
-            <div style={{ display: "flex", fontSize: titleSize, lineHeight: 0.95, letterSpacing: -1.5 }}>{project.title}</div>
-            <div style={{ display: "flex", gap: 10, fontFamily: "Sans", fontSize: 20 }}>
-              {project.tags.slice(0, 3).map((tag) => (
-                <div key={tag} style={{ display: "flex", background: COLORS.card, border: `1px solid ${COLORS.line}`, borderRadius: 999, padding: "6px 16px" }}>
-                  {tag}
-                </div>
-              ))}
-            </div>
+    <Frame>
+      <div style={{ display: "flex", alignItems: "center", gap: 48 }}>
+        <div style={{ display: "flex", flexDirection: "column", flex: 1, gap: 22 }}>
+          <div style={{ display: "flex", fontSize: 30, fontStyle: "italic", color: COLORS.mute }}>Case study · {project.year}</div>
+          <div style={{ display: "flex", fontSize: titleSize, lineHeight: 0.95, letterSpacing: -1.5 }}>{project.title}</div>
+          <div style={{ display: "flex", gap: 10, fontFamily: "Sans", fontSize: 20 }}>
+            {project.tags.slice(0, 3).map((tag) => (
+              <div
+                key={tag}
+                style={{
+                  display: "flex",
+                  background: COLORS.card,
+                  border: `1px solid ${COLORS.line}`,
+                  borderRadius: 999,
+                  padding: "6px 16px",
+                }}
+              >
+                {tag}
+              </div>
+            ))}
           </div>
-          {cover && (
-            <div style={{ display: "flex", width: 360, height: 300, borderRadius: 28, overflow: "hidden", background: COLORS.card, border: `1px solid ${COLORS.line}` }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={cover} width={360} height={300} style={{ objectFit: "cover", objectPosition: "top" }} alt="" />
-            </div>
-          )}
         </div>
-      </Frame>
-    ),
+        {cover && (
+          <div
+            style={{
+              display: "flex",
+              width: 360,
+              height: 300,
+              borderRadius: 28,
+              overflow: "hidden",
+              background: COLORS.card,
+              border: `1px solid ${COLORS.line}`,
+            }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={cover} width={360} height={300} style={{ objectFit: "cover", objectPosition: "top" }} alt="" />
+          </div>
+        )}
+      </div>
+    </Frame>,
     { ...OG_SIZE, fonts },
   );
 }
@@ -191,37 +224,35 @@ export async function brandIcon(size: number) {
   const letter = getSite().name.trim().charAt(0).toUpperCase();
 
   return new ImageResponse(
-    (
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        position: "relative",
+        background: COLORS.ink,
+        borderRadius: size * 0.22,
+        color: COLORS.paper,
+        fontFamily: "Serif",
+        fontSize: size * 0.78,
+        lineHeight: 1,
+      }}
+    >
+      <span style={{ marginTop: -size * 0.06 }}>{letter}</span>
       <div
         style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          position: "relative",
-          background: COLORS.ink,
-          borderRadius: size * 0.22,
-          color: COLORS.paper,
-          fontFamily: "Serif",
-          fontSize: size * 0.78,
-          lineHeight: 1,
+          position: "absolute",
+          right: size * 0.13,
+          bottom: size * 0.16,
+          width: size * 0.13,
+          height: size * 0.13,
+          borderRadius: 999,
+          background: COLORS.bright,
         }}
-      >
-        <span style={{ marginTop: -size * 0.06 }}>{letter}</span>
-        <div
-          style={{
-            position: "absolute",
-            right: size * 0.13,
-            bottom: size * 0.16,
-            width: size * 0.13,
-            height: size * 0.13,
-            borderRadius: 999,
-            background: COLORS.bright,
-          }}
-        />
-      </div>
-    ),
+      />
+    </div>,
     { width: size, height: size, fonts: [serif] },
   );
 }

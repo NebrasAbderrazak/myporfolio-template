@@ -82,8 +82,7 @@ http
       file = path.join(ROOT, "404.html");
     }
     const type =
-      (EXTENSIONLESS_PNG.has(path.basename(file)) ? "image/png" : TYPES[path.extname(file).toLowerCase()]) ??
-      "application/octet-stream";
+      (EXTENSIONLESS_PNG.has(path.basename(file)) ? "image/png" : TYPES[path.extname(file).toLowerCase()]) ?? "application/octet-stream";
     const gzip = /text|javascript|json|xml|svg/.test(type) && /\bgzip\b/.test(req.headers["accept-encoding"] ?? "");
     res.writeHead(status, {
       "Content-Type": type,

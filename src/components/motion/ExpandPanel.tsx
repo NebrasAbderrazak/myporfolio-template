@@ -17,10 +17,7 @@ export function ExpandPanel({ children, className }: { children: ReactNode; clas
 
   return (
     <div ref={ref}>
-      <m.div
-        className={cn("origin-top", className)}
-        style={active ? { scale, borderRadius: radius } : undefined}
-      >
+      <m.div className={cn("origin-top", className)} style={active ? { scale, borderRadius: radius } : undefined}>
         {children}
       </m.div>
     </div>

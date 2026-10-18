@@ -53,11 +53,7 @@ async function main() {
       expected.add(path.normalize(output));
       if (await isFresh(output, mtimeMs)) continue;
       await mkdir(path.dirname(output), { recursive: true });
-      await sharp(file)
-        .rotate()
-        .resize({ width: w, withoutEnlargement: true })
-        .webp({ quality: IMAGE_QUALITY })
-        .toFile(output);
+      await sharp(file).rotate().resize({ width: w, withoutEnlargement: true }).webp({ quality: IMAGE_QUALITY }).toFile(output);
       written++;
     }
 

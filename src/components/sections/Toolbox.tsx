@@ -36,7 +36,10 @@ export function Toolbox({ content }: { content: HomePage["toolbox"] }) {
                 {group.tools.map((tool) => (
                   <RevealItem as="li" key={tool.name} className="group">
                     <p className="flex items-center gap-2.5 text-[1.15rem] font-medium tracking-[-0.01em] text-ink">
-                      <span aria-hidden className="size-1.5 rounded-full bg-accent-bright transition-transform duration-500 group-hover:scale-150" />
+                      <span
+                        aria-hidden
+                        className="size-1.5 rounded-full bg-accent-bright transition-transform duration-500 group-hover:scale-150"
+                      />
                       {tool.name}
                     </p>
                     {tool.note && <p className="mt-1 pl-4 text-[0.98rem] leading-relaxed text-ink-soft">{tool.note}</p>}

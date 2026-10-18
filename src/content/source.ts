@@ -1,14 +1,15 @@
 import "server-only";
 import fs from "node:fs";
 import path from "node:path";
-import matter from "gray-matter";
+import { parse as parseYaml } from "yaml";
 import { z } from "zod";
 
 const CONTENT_ROOT = path.join(process.cwd(), "content");
 const PUBLIC_ROOT = path.join(process.cwd(), "public");
 const DOCUMENT = /\.mdx?$/;
+const FRONTMATTER = /^---\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/;
 
-export class ContentError extends Error {
+class ContentError extends Error {
   constructor(file: string, detail: string) {
     super(`Invalid content in content/${file}\n${detail}`);
     this.name = "ContentError";
@@ -32,6 +33,17 @@ export function readDocument<S extends z.ZodType>(file: string, schema: S): z.ou
   return validate(schema, data, file);
 }
 
+function splitFrontmatter(raw: string, file: string) {
+  const source = raw.replace(/^﻿/, "");
+  const match = FRONTMATTER.exec(source);
+  if (!match) return { data: {}, body: source };
+  try {
+    return { data: (parseYaml(match[1]) as unknown) ?? {}, body: source.slice(match[0].length) };
+  } catch (error) {
+    throw new ContentError(file, `Frontmatter is not valid YAML: ${(error as Error).message}`);
+  }
+}
+
 export type Entry<T> = T & {
   slug: string;
   file: string;
@@ -48,12 +60,12 @@ export function readCollection<S extends z.ZodType<object>>(dir: string, schema:
     .filter((name) => DOCUMENT.test(name) && !name.startsWith("_"))
     .map((name) => {
       const file = `${dir}/${name}`;
-      const { data, content } = matter(fs.readFileSync(path.join(folder, name), "utf8"));
+      const { data, body } = splitFrontmatter(fs.readFileSync(path.join(folder, name), "utf8"), file);
       return {
         ...validate(schema, data, file),
         slug: name.replace(DOCUMENT, ""),
         file,
-        body: content.trim(),
+        body: body.trim(),
         format: name.endsWith(".mdx") ? "mdx" : "md",
       };
     });

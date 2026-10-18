@@ -43,11 +43,10 @@ const sectionHeading = { title: emphasis };
 export const SOCIAL_PLATFORMS = ["linkedin", "github", "x", "instagram", "website"] as const;
 export type SocialPlatform = (typeof SOCIAL_PLATFORMS)[number];
 
-export const MOCKUPS = ["laptop", "browser", "phone", "none"] as const;
+const MOCKUPS = ["laptop", "browser", "phone", "none"] as const;
 
 export const BACKGROUND_STYLES = ["light", "shade", "dots", "contours", "none"] as const;
 export type BackgroundStyle = (typeof BACKGROUND_STYLES)[number];
-export type Mockup = (typeof MOCKUPS)[number];
 
 export const siteSchema = z.object({
   name: text,

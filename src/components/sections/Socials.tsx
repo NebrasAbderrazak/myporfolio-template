@@ -8,8 +8,7 @@ import { SectionHeading } from "./SectionHeading";
 
 export function Socials({ content, channels }: { content: HomePage["socials"]; channels: Channel[] }) {
   const t = getDictionary().channels;
-  const action = (channel: Channel) =>
-    channel.kind === "social" ? t.follow : channel.icon === "email" ? t.write : t.message;
+  const action = (channel: Channel) => (channel.kind === "social" ? t.follow : channel.icon === "email" ? t.write : t.message);
 
   return (
     <section id="elsewhere" aria-labelledby="elsewhere-title" className="shell pt-32 md:pt-52">

@@ -32,7 +32,9 @@ export function Footer({ site, profile, channels }: Props) {
           <h2 id="contact-title" className="display-xl">
             <BlurWords value={contact.title} />
           </h2>
-          {contact.intro && <MaskWords text={contact.intro} delay={0.2} className="mt-7 max-w-md text-[1.08rem] text-white/60 md:text-[1.15rem]" />}
+          {contact.intro && (
+            <MaskWords text={contact.intro} delay={0.2} className="mt-7 max-w-md text-[1.08rem] text-white/60 md:text-[1.15rem]" />
+          )}
           <div className="mt-10">
             <MagneticButton
               href={whatsapp?.href ?? `mailto:${profile.email}`}

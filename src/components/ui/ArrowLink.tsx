@@ -10,7 +10,6 @@ type Props = {
   className?: string;
 };
 
-/** Pill link with a round arrow that turns on hover. Navigates with the forward page transition. */
 export function ArrowLink({ href, children, size = "md", className }: Props) {
   return (
     <Link

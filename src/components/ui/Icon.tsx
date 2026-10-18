@@ -47,11 +47,7 @@ const ICONS = {
       stroke="none"
     />,
   ],
-  email: [
-    stroked,
-    <rect key="r" x="2.75" y="4.75" width="18.5" height="14.5" rx="3" />,
-    <path key="p" d="m3.5 6.5 8.5 6.5 8.5-6.5" />,
-  ],
+  email: [stroked, <rect key="r" x="2.75" y="4.75" width="18.5" height="14.5" rx="3" />, <path key="p" d="m3.5 6.5 8.5 6.5 8.5-6.5" />],
   globe: [
     stroked,
     <circle key="c" cx="12" cy="12" r="9" />,

@@ -10,7 +10,7 @@ const STAGE = {
   phone: "top-[7%] w-[44%] md:w-[24%]",
 } as const;
 
-/** The large cover under the case study header. Shares its view transition name with the project card. */
+/** Shares its view transition name with the project card, so opening a project morphs the card into this cover. */
 export function CaseStudyCover({ project }: { project: Project }) {
   const { mockup } = project;
 

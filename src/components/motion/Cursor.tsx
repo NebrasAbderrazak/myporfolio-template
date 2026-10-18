@@ -48,11 +48,7 @@ export function Cursor() {
   if (!enabled) return null;
 
   return (
-    <m.div
-      aria-hidden
-      className="pointer-events-none fixed left-0 top-0 z-[70]"
-      style={{ x: reduce ? x : sx, y: reduce ? y : sy }}
-    >
+    <m.div aria-hidden className="pointer-events-none fixed left-0 top-0 z-[70]" style={{ x: reduce ? x : sx, y: reduce ? y : sy }}>
       <m.div
         className="flex -translate-x-1/2 -translate-y-1/2 items-center gap-2 rounded-full bg-ink px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.08em] text-paper"
         initial={false}

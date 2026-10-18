@@ -14,7 +14,7 @@ built so anyone can make it theirs by changing content, not code.
 
 ## Quick start
 
-Requires Node.js 20.9 or newer (22 recommended).
+Requires Node.js 20.9 or newer; 22 is recommended and pinned in `.nvmrc`.
 
 ```bash
 npm install
@@ -28,15 +28,15 @@ Open http://localhost:3000. Content and code changes reload as you edit.
 Everything personal lives in `content/` and `public/media/`. The code has no
 names, links or copy in it, so a fork only needs new content:
 
-| What | File | In the admin panel |
-| --- | --- | --- |
-| Site name, domain, SEO description, contact section, footer | `content/settings/site.json` | Settings → Site |
-| Name, job title, portrait, location, company, email, WhatsApp, social profiles | `content/settings/profile.json` | Settings → Profile & contact |
-| Hero, selected work, bio, toolbox, updates and "elsewhere" sections | `content/pages/home.json` | Pages → Home |
-| Headers of `/work/` and `/updates/` | `content/pages/work.json`, `content/pages/updates.json` | Pages → … |
-| Case studies | `content/projects/*.md` | Projects |
-| Short posts | `content/updates/*.md` | Updates |
-| Photos and screenshots | `public/media/` | Media |
+| What                                                                           | File                                                    | In the admin panel           |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------- | ---------------------------- |
+| Site name, domain, SEO description, contact section, footer                    | `content/settings/site.json`                            | Settings → Site              |
+| Name, job title, portrait, location, company, email, WhatsApp, social profiles | `content/settings/profile.json`                         | Settings → Profile & contact |
+| Hero, selected work, bio, toolbox, updates and "elsewhere" sections            | `content/pages/home.json`                               | Pages → Home                 |
+| Headers of `/work/` and `/updates/`                                            | `content/pages/work.json`, `content/pages/updates.json` | Pages → …                    |
+| Case studies                                                                   | `content/projects/*.md`                                 | Projects                     |
+| Short posts                                                                    | `content/updates/*.md`                                  | Updates                      |
+| Photos and screenshots                                                         | `public/media/`                                         | Media                        |
 
 The favicon, Open Graph images and structured data are generated from these
 files. The build prints a warning while the domain or email still point at
@@ -67,14 +67,14 @@ later. The VPS setup below deploys from GitHub Actions on every push to `main`.
 
 Headings accept a small inline syntax, so you can style words without HTML:
 
-| Write | Result |
-| --- | --- |
-| `~muted~` | grey text |
-| `*italic*` | italic text |
-| `==accent==` | green text |
-| `~*and*~` | markers combine |
-| line break | new line (multi-line headings only) |
-| `\*` | a literal `*` |
+| Write        | Result                              |
+| ------------ | ----------------------------------- |
+| `~muted~`    | grey text                           |
+| `*italic*`   | italic text                         |
+| `==accent==` | green text                          |
+| `~*and*~`    | markers combine                     |
+| line break   | new line (multi-line headings only) |
+| `\*`         | a literal `*`                       |
 
 `Things I’ve ~*built & shipped*~` renders “Things I’ve” in ink and “built & shipped” in grey italics.
 
@@ -85,22 +85,22 @@ Headings accept a small inline syntax, so you can style words without HTML:
 Create one in the admin panel or with `npm run new:project`. Files are
 Markdown with frontmatter; use `.mdx` instead of `.md` when you need JSX.
 
-| Field | Required | Notes |
-| --- | --- | --- |
-| `title` | yes | |
-| `summary` | yes | One or two sentences, shown under the title and in search results |
-| `date` | yes | `YYYY-MM-DD`, newest first |
-| `tags` | no | The first two show on the card; all of them fill "Built with" |
-| `cover` | no | Screenshot in `/public/media`. Desktop 16:10 (e.g. 1920×1200), phone about 1170×2532 |
-| `mockup` | no | `laptop` (default), `browser`, `phone` or `none`: the frame drawn around the screenshot |
-| `icon` | no | Square logo above the case-study title; the first letter of the title otherwise |
-| `mission` | no | Shown in the "Mission" column, falls back to the summary |
-| `coverAlt` | no | Screenshot description for screen readers |
-| `link` | no | Live URL |
-| `role` | no | What you did |
-| `featured` | no | Shown on the home page; the newest projects fill in when none are featured |
-| `placeholder` | no | Adds a "Placeholder" badge |
-| `draft` | no | Visible in `npm run dev` only |
+| Field         | Required | Notes                                                                                   |
+| ------------- | -------- | --------------------------------------------------------------------------------------- |
+| `title`       | yes      |                                                                                         |
+| `summary`     | yes      | One or two sentences, shown under the title and in search results                       |
+| `date`        | yes      | `YYYY-MM-DD`, newest first                                                              |
+| `tags`        | no       | The first two show on the card; all of them fill "Built with"                           |
+| `cover`       | no       | Screenshot in `/public/media`. Desktop 16:10 (e.g. 1920×1200), phone about 1170×2532    |
+| `mockup`      | no       | `laptop` (default), `browser`, `phone` or `none`: the frame drawn around the screenshot |
+| `icon`        | no       | Square logo above the case-study title; the first letter of the title otherwise         |
+| `mission`     | no       | Shown in the "Mission" column, falls back to the summary                                |
+| `coverAlt`    | no       | Screenshot description for screen readers                                               |
+| `link`        | no       | Live URL                                                                                |
+| `role`        | no       | What you did                                                                            |
+| `featured`    | no       | Shown on the home page; the newest projects fill in when none are featured              |
+| `placeholder` | no       | Adds a "Placeholder" badge                                                              |
+| `draft`       | no       | Visible in `npm run dev` only                                                           |
 
 Use plain screenshots: the site draws the device around them.
 
@@ -119,15 +119,16 @@ without an image server. Run `npm run images` after adding a file while
 
 ## Scripts
 
-| Command | What it does |
-| --- | --- |
-| `npm run dev` | Development server on port 3000 |
-| `npm run build` | Static export to `out/` |
-| `npm run preview` | Serves `out/` on port 4173 with the same headers and 404 rules as nginx |
-| `npm run check` | Lint, typecheck and tests |
-| `npm test` | Unit tests, plus validation of every file in `content/` |
-| `npm run new:project` / `new:update` | Interactive scaffolders |
-| `npm run images` | Regenerates responsive images |
+| Command                              | What it does                                                            |
+| ------------------------------------ | ----------------------------------------------------------------------- |
+| `npm run dev`                        | Development server on port 3000                                         |
+| `npm run build`                      | Static export to `out/`                                                 |
+| `npm run preview`                    | Serves `out/` on port 4173 with the same headers and 404 rules as nginx |
+| `npm run check`                      | Formatting, lint, typecheck and tests (what CI runs before building)    |
+| `npm run format`                     | Formats the code with Prettier                                          |
+| `npm test`                           | Unit tests, plus validation of every file in `content/`                 |
+| `npm run new:project` / `new:update` | Interactive scaffolders                                                 |
+| `npm run images`                     | Regenerates responsive images                                           |
 
 ## Project structure
 
@@ -225,11 +226,11 @@ server stay up.
 
 **5. Add the GitHub secrets** in Settings → Secrets and variables → Actions:
 
-| Secret | Value |
-| --- | --- |
-| `DEPLOY_HOST` | Server IP or hostname |
-| `DEPLOY_USER` | The deploy user, e.g. `nebras` |
-| `DEPLOY_SSH_KEY` | The whole private key file `portfolio_deploy`, including the `BEGIN`/`END` lines |
+| Secret               | Value                                                                                                                  |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `DEPLOY_HOST`        | Server IP or hostname                                                                                                  |
+| `DEPLOY_USER`        | The deploy user, e.g. `nebras`                                                                                         |
+| `DEPLOY_SSH_KEY`     | The whole private key file `portfolio_deploy`, including the `BEGIN`/`END` lines                                       |
 | `DEPLOY_KNOWN_HOSTS` | Output of `ssh-keygen -F SERVER_IP` on a machine that has already connected, so the workflow only talks to your server |
 
 Optional variables (same page, Variables tab): `DEPLOY_PATH` (default
@@ -271,18 +272,19 @@ ln -sfn /var/www/nebras-portfolio/releases/OLDER_RELEASE /var/www/nebras-portfol
 - **Hero:** words blur into focus with CSS (so it plays before JavaScript), then
   the hero sinks back as you scroll.
 - **Headings:** words blur in as they scroll into view and blur out as they leave.
-- **Project cards:** rise in and open like a window (clip-path wipe), the laptop lid opens, devices tilt toward the
-  mouse, and opening a project morphs the card into the case-study cover with
-  the View Transitions API.
+- **Project cards:** rise in and open like a window (clip-path wipe), the
+  laptop lid opens, devices tilt toward the mouse, and opening a project morphs
+  the card into the case-study cover with the View Transitions API.
 - **About:** the bio lights up word by word as you scroll.
 - **Toolbox:** two marquees that follow your scroll speed and direction.
 - **Updates:** the timeline rail fills as you read.
 - **Footer:** a dark card that grows to full width, with a rising wordmark.
-- **Menu:** opens as a circle from the button, whose ring shows scroll progress.
+- **Menu:** opens as a circle growing from the menu button.
 
 With "reduce motion" on, smooth scrolling, parallax, tilt and scroll effects
-switch off. Phones get native scrolling and only `transform`/`opacity`
-animations. Every section is visible without JavaScript.
+switch off. Phones get native scrolling, no tilt or magnetic buttons, and a
+lower-resolution background at 30 fps. Every section is visible without
+JavaScript.
 
 ## Adding a language
 

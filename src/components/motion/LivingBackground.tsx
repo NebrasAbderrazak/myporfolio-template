@@ -45,7 +45,10 @@ function whenEngaged(callback: () => void) {
   let idle = 0;
   const engage = () => {
     remove();
-    idle = typeof window.requestIdleCallback === "function" ? window.requestIdleCallback(callback, { timeout: 400 }) : window.setTimeout(callback, 100);
+    idle =
+      typeof window.requestIdleCallback === "function"
+        ? window.requestIdleCallback(callback, { timeout: 400 })
+        : window.setTimeout(callback, 100);
   };
   const remove = () => ENGAGE_EVENTS.forEach((type) => window.removeEventListener(type, engage));
   ENGAGE_EVENTS.forEach((type) => window.addEventListener(type, engage, { passive: true }));

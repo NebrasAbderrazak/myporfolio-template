@@ -3,7 +3,6 @@ import { ScrollAway } from "@/components/motion/ScrollAway";
 import { EnterWords } from "@/components/typography/EnterWords";
 import type { ListingPage } from "@/content/schema";
 
-/** Centered header for index pages: title and intro. */
 export function ListingHeader({ content }: { content: ListingPage }) {
   return (
     <ScrollAway distance={600}>
