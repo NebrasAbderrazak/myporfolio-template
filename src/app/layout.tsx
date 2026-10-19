@@ -9,7 +9,7 @@ import { contactChannels } from "@/content/channels";
 import { getProfile, getSite } from "@/content/settings";
 import { getDictionary } from "@/i18n";
 import { utcOffsetLabel } from "@/lib/format";
-import { pageMetadata } from "@/lib/metadata";
+import { homeTitle, pageMetadata } from "@/lib/metadata";
 
 export function generateMetadata(): Metadata {
   const site = getSite();
@@ -17,7 +17,7 @@ export function generateMetadata(): Metadata {
   return {
     ...pageMetadata({}),
     metadataBase: new URL(site.url),
-    title: { default: `${site.name} | ${site.tagline}`, template: `%s | ${site.name}` },
+    title: { default: homeTitle(), template: `%s | ${site.name}` },
     applicationName: site.name,
     authors: [{ name: profile.name, url: site.url }],
     creator: profile.name,

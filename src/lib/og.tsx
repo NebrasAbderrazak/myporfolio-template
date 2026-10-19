@@ -59,7 +59,7 @@ async function loadImage(publicPath: string) {
 
 function Frame({ children }: { children: ReactNode }) {
   const site = getSite();
-  const { location, company } = getProfile();
+  const { location, role } = getProfile();
 
   return (
     <div
@@ -99,15 +99,21 @@ function Frame({ children }: { children: ReactNode }) {
       {children}
       <div style={{ display: "flex", justifyContent: "space-between", fontFamily: "Sans", fontSize: 21, color: COLORS.soft }}>
         <div style={{ display: "flex" }}>{new URL(site.url).host}</div>
-        {company && <div style={{ display: "flex" }}>{`${company.label} ${company.name}`}</div>}
+        <div style={{ display: "flex" }}>{role}</div>
       </div>
     </div>
   );
 }
 
+/** Shrinks long headlines so the longest line fits next to the portrait. */
+function headlineSize(value: Emphasis) {
+  const longest = Math.max(...value.map((line) => line.reduce((length, segment) => length + segment.text.length, 0)));
+  return Math.min(118, Math.floor(820 / (longest * 0.44)));
+}
+
 function Headline({ value }: { value: Emphasis }) {
   return (
-    <div style={{ display: "flex", flexDirection: "column", fontSize: 118, lineHeight: 0.95, letterSpacing: -2 }}>
+    <div style={{ display: "flex", flexDirection: "column", fontSize: headlineSize(value), lineHeight: 0.95, letterSpacing: -2 }}>
       {value.map((line, li) => (
         <div key={li} style={{ display: "flex", whiteSpace: "pre" }}>
           {line.map((segment, si) => (

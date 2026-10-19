@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { contactChannels, whatsappUrl } from "@/content/channels";
-import { profileSchema, projectSchema, siteSchema } from "@/content/schema";
+import { nowSchema, profileSchema, projectSchema, siteSchema } from "@/content/schema";
 
 const profile = {
   name: "Ada",
@@ -80,5 +80,19 @@ describe("contactChannels", () => {
 
   it("builds a wa.me link from a formatted number", () => {
     expect(whatsappUrl("+1 (555) 010-9999")).toBe("https://wa.me/15550109999");
+  });
+});
+
+describe("nowSchema", () => {
+  const base = { title: "Now", items: [] };
+
+  it("allows an empty draft", () => {
+    expect(nowSchema.parse({ ...base, draft: true }).items).toEqual([]);
+  });
+
+  it("asks for 3 to 5 lines before it is published", () => {
+    expect(nowSchema.safeParse({ ...base, draft: false }).success).toBe(false);
+    const items = ["Building", "Learning", "Thinking about"].map((label) => ({ label, text: "Something" }));
+    expect(nowSchema.safeParse({ ...base, draft: false, items }).success).toBe(true);
   });
 });

@@ -25,15 +25,12 @@ export function PersonJsonLd() {
         image: absoluteUrl(profile.portrait),
         jobTitle: profile.role,
         description: site.description,
-        email: `mailto:${profile.email}`,
+        ...(!/@example.(com|org|net)$/.test(profile.email) && { email: `mailto:${profile.email}` }),
         address: {
           "@type": "PostalAddress",
           addressLocality: profile.location.city,
           addressCountry: profile.location.countryCode,
         },
-        ...(profile.company && {
-          worksFor: { "@type": "Organization", name: profile.company.name, ...(profile.company.url && { url: profile.company.url }) },
-        }),
         ...(skills.length > 0 && { knowsAbout: skills }),
         ...(sameAs.length > 0 && { sameAs }),
       }}

@@ -137,7 +137,7 @@ content:
           - name: status
             label: Status
             type: string
-            description: The small pill under the hero, e.g. "Open to new projects". Leave empty to hide it.
+            description: One short line, e.g. "Building in Gabès". Shown under the hero and as "Currently" in About. Leave empty to hide it.
           - name: location
             label: Location
             type: object
@@ -254,21 +254,6 @@ content:
                 type: text
                 description: Words light up one by one as visitors scroll.
                 required: true
-              - name: facts
-                label: Facts
-                type: object
-                list:
-                  max: 3
-                  collapsible:
-                    collapsed: true
-                    summary: "{label} {value}"
-                fields:
-                  - name: label
-                    type: string
-                    required: true
-                  - name: value
-                    type: string
-                    required: true
           - name: toolbox
             label: Toolbox
             type: object
@@ -318,6 +303,54 @@ content:
             fields:
               - name: title
                 component: heading
+
+      - name: now
+        label: Now
+        type: file
+        path: content/pages/now.json
+        format: json
+        fields:
+          - name: draft
+            type: boolean
+            description: Keep on until the section is ready. Turn it off to show the section on the home page.
+          - name: title
+            component: heading
+          - name: updated
+            label: Last updated
+            type: date
+            options:
+              format: yyyy-MM-dd
+          - name: items
+            label: Lines
+            description: 3 to 5 short lines about what you're building, learning and thinking about this month.
+            type: object
+            list:
+              max: 5
+              collapsible:
+                collapsed: false
+                summary: "{label}"
+            fields:
+              - name: label
+                type: string
+                description: e.g. Building, Learning, Thinking about
+                required: true
+              - name: text
+                type: string
+                required: true
+
+      - name: side_projects_page
+        label: Side projects section
+        type: file
+        path: content/pages/side-projects.json
+        format: json
+        fields:
+          - name: draft
+            type: boolean
+            description: Keep on until you have side projects to show. Turn it off to show the section on the home page.
+          - name: title
+            component: heading
+          - name: intro
+            type: text
 
       - name: work_page
         label: All projects page
@@ -423,6 +456,89 @@ content:
         options:
           format: markdown
           path: public/media/projects
+
+  - name: side_projects
+    label: Side projects
+    type: collection
+    path: content/side-projects
+    format: yaml-frontmatter
+    filename:
+      template: "{fields.title}.md"
+      field: create
+    view:
+      fields: [title, date, featured, draft]
+      primary: title
+      sort: [date, title]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: title
+        type: string
+        required: true
+      - name: summary
+        type: text
+        description: One or two sentences shown under the title.
+        required: true
+      - name: date
+        type: date
+        options:
+          format: yyyy-MM-dd
+        required: true
+      - name: tags
+        label: Built with
+        type: string
+        list: true
+      - name: cover
+        label: Screenshot
+        type: image
+        options:
+          path: public/media/side-projects
+        description: Desktop screenshots look best at 16:10 (e.g. 1920×1200), phone screenshots at about 1170×2532.
+      - name: coverAlt
+        label: Screenshot description
+        type: string
+      - name: mockup
+        label: Frame
+        type: select
+        options:
+          values:
+            - { name: laptop, label: Laptop }
+            - { name: browser, label: Browser window }
+            - { name: phone, label: Phone }
+            - { name: none, label: No frame }
+      - name: icon
+        label: Logo
+        type: image
+        options:
+          path: public/media/side-projects
+        description: Optional square logo. The first letter of the title is used otherwise.
+      - name: mission
+        type: text
+        description: What the project is for and who it helps.
+      - name: role
+        label: Your role
+        type: string
+      - name: link
+        label: Link
+        type: string
+        description: Full URL with https://. The card links here; leave empty for a card without a link.
+      - name: featured
+        label: Show on the home page
+        type: boolean
+      - name: placeholder
+        label: Sample entry
+        type: boolean
+        description: Adds a "Placeholder" badge.
+      - name: draft
+        type: boolean
+        description: Drafts are visible in development only.
+      - name: body
+        label: Case study
+        type: rich-text
+        options:
+          format: markdown
+          path: public/media/side-projects
 
   - name: updates
     label: Updates

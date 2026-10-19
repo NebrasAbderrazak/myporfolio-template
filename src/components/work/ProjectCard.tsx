@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { ViewTransition } from "react";
+import { ViewTransition, type ReactNode } from "react";
 import { Device } from "@/components/media/Device";
 import { Tilt } from "@/components/motion/Tilt";
 import { WipeIn } from "@/components/motion/WipeIn";
+import { ExternalAnchor } from "@/components/ui/ExternalAnchor";
 import type { Project } from "@/content/projects";
 import { getDictionary } from "@/i18n";
 import { cn } from "@/lib/cn";
@@ -11,7 +12,28 @@ import { PlaceholderBadge } from "./PlaceholderBadge";
 type Props = {
   project: Project;
   wide?: boolean;
+  /** Where the card leads. Defaults to the case study; null makes the card static. */
+  href?: string | null;
 };
+
+type CardLinkProps = { href: string | null; className?: string; children: ReactNode; decorative?: boolean; cursor?: string };
+
+function CardLink({ href, className, children, decorative, cursor }: CardLinkProps) {
+  const hidden = decorative ? ({ tabIndex: -1, "aria-hidden": true } as const) : {};
+  if (!href) return <div className={className}>{children}</div>;
+  if (/^https?:\/\//.test(href)) {
+    return (
+      <ExternalAnchor href={href} className={className} data-cursor={cursor} {...hidden}>
+        {children}
+      </ExternalAnchor>
+    );
+  }
+  return (
+    <Link href={href} transitionTypes={["page-forward"]} className={className} data-cursor={cursor} {...hidden}>
+      {children}
+    </Link>
+  );
+}
 
 const PLACEMENT = {
   laptop: { normal: "top-[14%] w-[90%]", wide: "top-[14%] w-[90%] md:top-[11%] md:w-[58%]" },
@@ -19,17 +41,17 @@ const PLACEMENT = {
   phone: { normal: "top-[9%] w-[34%]", wide: "top-[9%] w-[34%] md:w-[18%]" },
 } as const;
 
-export function ProjectCard({ project, wide = false }: Props) {
+export function ProjectCard({ project, wide = false, href = `/work/${project.slug}/` }: Props) {
   const t = getDictionary().work;
-  const href = `/work/${project.slug}/`;
+  const caseStudy = href === `/work/${project.slug}/`;
   const kind = project.mockup;
   const sizes = wide ? "(min-width: 768px) 52vw, 92vw" : "(min-width: 768px) 42vw, 92vw";
 
   return (
     <article className="group">
-      <Link href={href} transitionTypes={["page-forward"]} tabIndex={-1} aria-hidden data-cursor={t.cursor} className="block">
+      <CardLink href={href} decorative cursor={href ? t.cursor : undefined} className="block">
         <WipeIn>
-          <ViewTransition name={`cover-${project.slug}`} share="morph" default="none">
+          <ViewTransition name={caseStudy ? `cover-${project.slug}` : undefined} share="morph" default="none">
             <div
               className={cn(
                 "relative overflow-hidden rounded-[1.75rem] bg-card shadow-soft ring-1 ring-black/[0.05] transition-shadow duration-700 ease-out-expo group-hover:shadow-lift md:rounded-[2rem]",
@@ -66,13 +88,17 @@ export function ProjectCard({ project, wide = false }: Props) {
             </div>
           </ViewTransition>
         </WipeIn>
-      </Link>
+      </CardLink>
 
       <div className="mt-5 flex flex-wrap items-start justify-between gap-x-6 gap-y-3 px-1 md:mt-6">
         <h3 className="font-sans text-[1.3rem] leading-snug tracking-[-0.01em] md:text-[1.5rem]">
-          <Link href={href} transitionTypes={["page-forward"]} className="link-draw">
-            {project.title}
-          </Link>
+          {href ? (
+            <CardLink href={href} className="link-draw">
+              {project.title}
+            </CardLink>
+          ) : (
+            project.title
+          )}
         </h3>
         <ul className="flex flex-wrap gap-2" aria-label={t.tags}>
           {project.placeholder && <PlaceholderBadge as="li" />}

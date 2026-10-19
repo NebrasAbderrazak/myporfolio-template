@@ -19,8 +19,14 @@ export const en = {
     elsewhere: "Elsewhere",
     localTime: "Local time in",
   },
-  sections: {
-    about: "About me",
+  now: {
+    updated: "Updated",
+  },
+  about: {
+    heading: "About me",
+    basedIn: "Based in",
+    localTime: "Local time",
+    currently: "Currently",
   },
   work: {
     viewAll: "All projects",

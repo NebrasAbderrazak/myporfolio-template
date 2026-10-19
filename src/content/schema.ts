@@ -102,10 +102,7 @@ export const homePageSchema = z.object({
     secondaryButton: text,
   }),
   work: z.object({ ...sectionHeading, limit: limit(6) }),
-  about: z.object({
-    bio: text,
-    facts: z.array(z.object({ label: text, value: text })).default([]),
-  }),
+  about: z.object({ bio: text }),
   toolbox: z.object({
     ...sectionHeading,
     intro: optional(text),
@@ -118,6 +115,24 @@ export const homePageSchema = z.object({
 });
 
 export const listingPageSchema = z.object({ ...sectionHeading, intro: optional(text) });
+
+// Optional home sections stay hidden while draft is true.
+const draft = z.boolean().default(true);
+
+export const nowSchema = z
+  .object({
+    draft,
+    ...sectionHeading,
+    updated: optional(isoDate),
+    items: z.array(z.object({ label: text, text })).default([]),
+  })
+  .superRefine((now, ctx) => {
+    if (!now.draft && (now.items.length < 3 || now.items.length > 5)) {
+      ctx.addIssue({ code: "custom", path: ["items"], message: "Add 3 to 5 lines before setting draft to false." });
+    }
+  });
+
+export const sideProjectsSchema = z.object({ draft, ...sectionHeading, intro: optional(text) });
 
 export const projectSchema = z.object({
   title: text,
@@ -148,3 +163,5 @@ export type Site = z.output<typeof siteSchema>;
 export type Profile = z.output<typeof profileSchema>;
 export type HomePage = z.output<typeof homePageSchema>;
 export type ListingPage = z.output<typeof listingPageSchema>;
+export type Now = z.output<typeof nowSchema>;
+export type SideProjectsPage = z.output<typeof sideProjectsSchema>;

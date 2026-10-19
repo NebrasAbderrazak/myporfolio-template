@@ -34,15 +34,19 @@ This copies the starter content into `content/`, which is yours to edit and
 commit. Files in `content/` always win; anything missing there falls back to
 `starter/`. The code has no names, links or copy in it:
 
-| What                                                                           | File                                                    | In the admin panel           |
-| ------------------------------------------------------------------------------ | ------------------------------------------------------- | ---------------------------- |
-| Site name, domain, SEO description, contact section, footer                    | `content/settings/site.json`                            | Settings → Site              |
-| Name, job title, portrait, location, company, email, WhatsApp, social profiles | `content/settings/profile.json`                         | Settings → Profile & contact |
-| Hero, selected work, bio, toolbox, updates and "elsewhere" sections            | `content/pages/home.json`                               | Pages → Home                 |
-| Headers of `/work/` and `/updates/`                                            | `content/pages/work.json`, `content/pages/updates.json` | Pages → …                    |
-| Case studies                                                                   | `content/projects/*.md`                                 | Projects                     |
-| Short posts                                                                    | `content/updates/*.md`                                  | Updates                      |
-| Photos and screenshots                                                         | `public/media/`                                         | Media                        |
+| What                                                                           | File                                                             | In the admin panel                           |
+| ------------------------------------------------------------------------------ | ---------------------------------------------------------------- | -------------------------------------------- |
+| Site name, domain, SEO description, contact section, footer                    | `content/settings/site.json`                                     | Settings → Site                              |
+| Name, job title, portrait, location, company, email, WhatsApp, social profiles | `content/settings/profile.json`                                  | Settings → Profile & contact                 |
+| Hero, selected work, bio, toolbox, updates and "elsewhere" sections            | `content/pages/home.json`                                        | Pages → Home                                 |
+| Headers of `/work/` and `/updates/`                                            | `content/pages/work.json`, `content/pages/updates.json`          | Pages → …                                    |
+| Case studies                                                                   | `content/projects/*.md`                                          | Projects                                     |
+| Short posts                                                                    | `content/updates/*.md`                                           | Updates                                      |
+| "Now" section: what you're building, learning and thinking about               | `content/pages/now.json`                                         | Pages → Now                                  |
+| Side projects, kept apart from client work                                     | `content/pages/side-projects.json`, `content/side-projects/*.md` | Pages → Side projects section, Side projects |
+| Photos and screenshots                                                         | `public/media/`                                                  | Media                                        |
+
+The "Now" and side projects sections stay hidden while their `draft` setting is `true`. Side projects use the same fields as projects; their cards link to the `link` URL and have no page of their own.
 
 `PORTFOLIO_CONTENT=starter npm run dev` shows the starter content even when
 `content/` exists.

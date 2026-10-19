@@ -7,8 +7,8 @@ const showDrafts = process.env.NODE_ENV === "development";
 
 const newestFirst = <T extends { date: string }>(a: T, b: T) => b.date.localeCompare(a.date);
 
-export const getProjects = cache(() =>
-  readCollection("projects", projectSchema)
+function readProjects(dir: string) {
+  return readCollection(dir, projectSchema)
     .filter((project) => showDrafts || !project.draft)
     .map((project) => ({
       ...project,
@@ -17,8 +17,13 @@ export const getProjects = cache(() =>
       coverAlt: project.coverAlt ?? `${project.title}, screenshot`,
       icon: resolveAsset(project.icon, project.file),
     }))
-    .sort(newestFirst),
-);
+    .sort(newestFirst);
+}
+
+export const getProjects = cache(() => readProjects("projects"));
+
+/** Personal builds and experiments, kept apart from client work. They have no pages of their own. */
+export const getSideProjects = cache(() => readProjects("side-projects"));
 
 export type Project = ReturnType<typeof getProjects>[number];
 
