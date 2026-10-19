@@ -81,7 +81,15 @@ export function ProjectCard({ project, wide = false, href = `/work/${project.slu
                       PLACEMENT[kind][wide ? "wide" : "normal"],
                     )}
                   >
-                    <Device kind={kind} src={project.cover} alt={project.coverAlt} sizes={sizes} open fallback={project.title} />
+                    <Device
+                      kind={kind}
+                      src={project.cover}
+                      video={project.video}
+                      alt={project.coverAlt}
+                      sizes={sizes}
+                      open
+                      fallback={project.title}
+                    />
                   </div>
                 </Tilt>
               )}

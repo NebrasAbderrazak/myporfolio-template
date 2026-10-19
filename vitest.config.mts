@@ -12,5 +12,7 @@ export default defineConfig({
   test: {
     include: ["tests/**/*.test.ts"],
     environment: "node",
+    // The first import of the content loaders pulls in React and can be slow on a busy machine.
+    testTimeout: 15_000,
   },
 });

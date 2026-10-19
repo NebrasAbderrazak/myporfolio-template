@@ -19,9 +19,12 @@ function MarkdownImage({ src, alt, title }: ComponentPropsWithoutRef<"img">) {
   );
 }
 
+const FILE_LINK = /.[a-z0-9]{2,5}$/i;
+
 function MarkdownLink({ href = "", ...rest }: ComponentPropsWithoutRef<"a">) {
-  if (href.startsWith("/")) return <Link href={href} {...rest} />;
-  return <ExternalAnchor href={href} {...rest} />;
+  // Links to files (a video, a PDF) are plain downloads, not pages for the router.
+  if (href.startsWith("/") && !FILE_LINK.test(href)) return <Link href={href} {...rest} />;
+  return <ExternalAnchor href={href} external={href.startsWith("/") || undefined} {...rest} />;
 }
 
 const components = { img: MarkdownImage, a: MarkdownLink };

@@ -113,22 +113,25 @@ the exported files.
 Create one in the admin panel or with `npm run new:project`. Files are
 Markdown with frontmatter; use `.mdx` instead of `.md` when you need JSX.
 
-| Field         | Required | Notes                                                                                   |
-| ------------- | -------- | --------------------------------------------------------------------------------------- |
-| `title`       | yes      |                                                                                         |
-| `summary`     | yes      | One or two sentences, shown under the title and in search results                       |
-| `date`        | yes      | `YYYY-MM-DD`, newest first                                                              |
-| `tags`        | no       | The first two show on the card; all of them fill "Built with"                           |
-| `cover`       | no       | Screenshot in `/public/media`. Desktop 16:10 (e.g. 1920×1200), phone about 1170×2532    |
-| `mockup`      | no       | `laptop` (default), `browser`, `phone` or `none`: the frame drawn around the screenshot |
-| `icon`        | no       | Square logo above the case-study title; the first letter of the title otherwise         |
-| `mission`     | no       | Shown in the "Mission" column, falls back to the summary                                |
-| `coverAlt`    | no       | Screenshot description for screen readers                                               |
-| `link`        | no       | Live URL                                                                                |
-| `role`        | no       | What you did                                                                            |
-| `featured`    | no       | Shown on the home page; the newest projects fill in when none are featured              |
-| `placeholder` | no       | Adds a "Placeholder" badge                                                              |
-| `draft`       | no       | Visible in `npm run dev` only                                                           |
+| Field         | Required | Notes                                                                                                                                                                           |
+| ------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `title`       | yes      |                                                                                                                                                                                 |
+| `summary`     | yes      | One or two sentences, shown under the title and in search results                                                                                                               |
+| `date`        | yes      | `YYYY-MM-DD`, newest first                                                                                                                                                      |
+| `tags`        | no       | The first two show on the card; all of them fill "Built with"                                                                                                                   |
+| `cover`       | no       | Screenshot in `/public/media`. Desktop 16:10 (e.g. 1920×1200), phone about 1170×2532                                                                                            |
+| `mockup`      | no       | `laptop` (default), `browser`, `phone` or `none`: the frame drawn around the screenshot                                                                                         |
+| `icon`        | no       | Square logo above the case-study title; the first letter of the title otherwise                                                                                                 |
+| `mission`     | no       | Shown in the "Mission" column, falls back to the summary                                                                                                                        |
+| `coverAlt`    | no       | Screenshot description for screen readers                                                                                                                                       |
+| `video`       | no       | MP4 preview that loops, muted, inside the device frame instead of the screenshot. Use 16:10 for laptops. Plays only while on screen and stays on the poster with reduced motion |
+| `videoWebm`   | no       | Smaller WebM version of the same video, offered first to browsers that support it                                                                                               |
+| `poster`      | no       | Frame shown before the video plays; defaults to `cover`                                                                                                                         |
+| `link`        | no       | Live URL                                                                                                                                                                        |
+| `role`        | no       | What you did                                                                                                                                                                    |
+| `featured`    | no       | Shown on the home page; the newest projects fill in when none are featured                                                                                                      |
+| `placeholder` | no       | Adds a "Placeholder" badge                                                                                                                                                      |
+| `draft`       | no       | Visible in `npm run dev` only                                                                                                                                                   |
 
 Use plain screenshots: the site draws the device around them.
 

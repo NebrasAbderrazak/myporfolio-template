@@ -5,7 +5,7 @@
 media:
   input: public/media
   output: /media
-  categories: [image]
+  categories: [image, video]
   rename: safe
 
 components:
@@ -415,6 +415,26 @@ content:
       - name: coverAlt
         label: Screenshot description
         type: string
+      - name: video
+        label: Preview video (MP4)
+        type: file
+        options:
+          path: public/media/projects
+          extensions: [mp4]
+        description: Optional. A muted looping preview that plays inside the device frame instead of the screenshot. Use 16:10 for laptops. The screenshot above is the fallback.
+      - name: videoWebm
+        label: Preview video (WebM)
+        type: file
+        options:
+          path: public/media/projects
+          extensions: [webm]
+        description: Optional smaller version of the same video for browsers that support it.
+      - name: poster
+        label: Video poster
+        type: image
+        options:
+          path: public/media/projects
+        description: Optional frame shown before the video plays and when the visitor prefers reduced motion. Defaults to the screenshot.
       - name: mockup
         label: Frame
         type: select
@@ -498,6 +518,26 @@ content:
       - name: coverAlt
         label: Screenshot description
         type: string
+      - name: video
+        label: Preview video (MP4)
+        type: file
+        options:
+          path: public/media/side-projects
+          extensions: [mp4]
+        description: Optional. A muted looping preview that plays inside the device frame instead of the screenshot. Use 16:10 for laptops. The screenshot above is the fallback.
+      - name: videoWebm
+        label: Preview video (WebM)
+        type: file
+        options:
+          path: public/media/side-projects
+          extensions: [webm]
+        description: Optional smaller version of the same video for browsers that support it.
+      - name: poster
+        label: Video poster
+        type: image
+        options:
+          path: public/media/side-projects
+        description: Optional frame shown before the video plays and when the visitor prefers reduced motion. Defaults to the screenshot.
       - name: mockup
         label: Frame
         type: select

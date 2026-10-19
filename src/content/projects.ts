@@ -3,6 +3,17 @@ import { cache } from "react";
 import { projectSchema } from "./schema";
 import { readCollection, resolveAsset } from "./source";
 
+/** A looping preview that plays inside the device frame. Needs the video itself; the poster falls back to the cover. */
+function previewVideo(project: { video?: string; videoWebm?: string; poster?: string; cover?: string; file: string }) {
+  const mp4 = resolveAsset(project.video, project.file);
+  if (!mp4) return undefined;
+  return {
+    mp4,
+    webm: resolveAsset(project.videoWebm, project.file),
+    poster: resolveAsset(project.poster ?? project.cover, project.file),
+  };
+}
+
 const showDrafts = process.env.NODE_ENV === "development";
 
 const newestFirst = <T extends { date: string }>(a: T, b: T) => b.date.localeCompare(a.date);
@@ -16,6 +27,7 @@ function readProjects(dir: string) {
       cover: resolveAsset(project.cover, project.file),
       coverAlt: project.coverAlt ?? `${project.title}, screenshot`,
       icon: resolveAsset(project.icon, project.file),
+      video: previewVideo(project),
     }))
     .sort(newestFirst);
 }

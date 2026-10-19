@@ -32,6 +32,7 @@ export function CaseStudyCover({ project }: { project: Project }) {
               <Device
                 kind="none"
                 src={project.cover}
+                video={project.video}
                 alt={project.coverAlt}
                 sizes="90vw"
                 priority
@@ -44,6 +45,7 @@ export function CaseStudyCover({ project }: { project: Project }) {
               <Device
                 kind={mockup}
                 src={project.cover}
+                video={project.video}
                 alt={project.coverAlt}
                 sizes="(min-width: 768px) 64vw, 90vw"
                 priority

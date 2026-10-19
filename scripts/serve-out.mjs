@@ -24,6 +24,8 @@ const TYPES = {
   ".ico": "image/x-icon",
   ".woff2": "font/woff2",
   ".woff": "font/woff",
+  ".mp4": "video/mp4",
+  ".webm": "video/webm",
 };
 
 // Keep in sync with deploy/nginx/security-headers.conf
@@ -38,8 +40,17 @@ const SECURITY = {
 
 function cacheControl(urlPath) {
   if (urlPath.startsWith("/_next/static/")) return "public, max-age=31536000, immutable";
-  if (/\.(webp|avif|jpe?g|png|svg|ico|woff2?)$/.test(urlPath)) return "public, max-age=604800";
+  if (/\.(webp|avif|jpe?g|png|svg|ico|woff2?|mp4|webm)$/.test(urlPath)) return "public, max-age=604800";
   return "no-cache";
+}
+
+/** Video needs byte ranges to loop and seek. Returns null when the request has none, "invalid" when it is out of bounds. */
+function parseRange(header, size) {
+  const match = /^bytes=(\d*)-(\d*)$/.exec(header ?? "");
+  if (!match) return null;
+  const start = match[1] === "" ? size - Number(match[2]) : Number(match[1]);
+  const end = match[1] === "" || match[2] === "" ? size - 1 : Math.min(Number(match[2]), size - 1);
+  return start >= 0 && start <= end ? { start, end } : "invalid";
 }
 
 function resolve(urlPath) {
@@ -84,7 +95,26 @@ http
     const type =
       (EXTENSIONLESS_PNG.has(path.basename(file)) ? "image/png" : TYPES[path.extname(file).toLowerCase()]) ?? "application/octet-stream";
     const gzip = /text|javascript|json|xml|svg/.test(type) && /\bgzip\b/.test(req.headers["accept-encoding"] ?? "");
+    const size = status === 200 ? statSync(file).size : 0;
+    const range = status === 200 ? parseRange(req.headers.range, size) : null;
+    if (range === "invalid") {
+      res.writeHead(416, { "Content-Range": `bytes */${size}` }).end();
+      return;
+    }
+    if (range) {
+      res.writeHead(206, {
+        "Content-Type": type,
+        "Content-Length": range.end - range.start + 1,
+        "Content-Range": `bytes ${range.start}-${range.end}/${size}`,
+        "Accept-Ranges": "bytes",
+        "Cache-Control": cacheControl(urlPath),
+        ...SECURITY,
+      });
+      createReadStream(file, range).pipe(res);
+      return;
+    }
     res.writeHead(status, {
+      "Accept-Ranges": "bytes",
       "Content-Type": type,
       "Cache-Control": status === 200 ? cacheControl(urlPath) : "no-cache",
       ...(gzip ? { "Content-Encoding": "gzip", Vary: "Accept-Encoding" } : {}),

@@ -1,5 +1,6 @@
 import { LaptopHinge } from "@/components/motion/Hinge";
-import { Picture } from "@/components/media/Picture";
+import type { VideoSources } from "@/components/media/LoopVideo";
+import { ProjectMedia } from "@/components/media/ProjectMedia";
 import { cn } from "@/lib/cn";
 
 export type DeviceKind = "laptop" | "phone" | "browser" | "none";
@@ -7,6 +8,7 @@ export type DeviceKind = "laptop" | "phone" | "browser" | "none";
 type Props = {
   kind: DeviceKind;
   src?: string;
+  video?: VideoSources;
   alt: string;
   sizes: string;
   open?: boolean;
@@ -15,16 +17,9 @@ type Props = {
   className?: string;
 };
 
-export function Device({ kind, src, alt, sizes, open = false, priority, fallback = "", className }: Props) {
+export function Device({ kind, src, video, alt, sizes, open = false, priority, fallback = "", className }: Props) {
   const screen = src ? (
-    <Picture
-      src={src}
-      alt={alt}
-      fill
-      sizes={sizes}
-      className="object-cover object-top"
-      {...(priority ? { loading: "eager" as const, fetchPriority: "high" as const } : {})}
-    />
+    <ProjectMedia src={src} alt={alt} sizes={sizes} video={video} priority={priority} />
   ) : (
     <div className="absolute inset-0 flex items-center justify-center bg-ink">
       <span className="font-serif text-[clamp(2.5rem,8vw,7rem)] italic leading-none text-paper/90">{fallback.charAt(0)}</span>
